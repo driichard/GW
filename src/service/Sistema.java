@@ -17,7 +17,8 @@ public class Sistema {
 
     public void cadastrarCliente(Scanner input) {
         System.out.println("Nome:");
-        String nome = input.next();
+        String nome = input.nextLine();
+        input.next();
 
         System.out.println("Telefone:");
         String telefone = input.next();
@@ -30,15 +31,18 @@ public class Sistema {
 
         System.out.println("Rua:");
         String rua = input.next();
+        input.next();
 
         System.out.println("Número:");
         String numero = input.next();
 
         System.out.println("Bairro:");
-        String bairro = input.next();
+        String bairro = input.nextLine();
+        input.next();
 
         System.out.println("Cidade:");
-        String cidade = input.next();
+        String cidade = input.nextLine();
+        input.next();
 
         System.out.println("Estado:");
         String estado = input.next();
@@ -61,7 +65,7 @@ public class Sistema {
 
         this.clientes.add(clientes);
 
-        System.out.println("Cliente cadastrado com sucesso!");
+        System.out.println("Cliente cadastrado com sucesso!!!");
     }
 
     public void cadastrarProduto(Scanner input) {
@@ -83,13 +87,15 @@ public class Sistema {
                 quantidade);
 
         produtos.add(produto);
+
+        System.out.println("Produto cadastrado com sucesso!!!");
     }
 
     public void cadastrarEntrega(Scanner input) {
-        System.out.println("id");
+        System.out.println("ID");
         int id = input.nextInt();
 
-        System.out.println("cpf");
+        System.out.println("CPF do Cliente");
         String cpf = input.next();
 
         Clientes clienteEncontrado = null;
@@ -106,7 +112,7 @@ public class Sistema {
             return;
         }
 
-        System.out.println("idProduto");
+        System.out.println("IDProduto");
         int idProduto = input.nextInt();
 
         Produto produtoEncontrado = null;
@@ -123,28 +129,31 @@ public class Sistema {
             return;
         }
 
-        System.out.println("valor da entrega");
+        System.out.println("Valor da entrega");
         double valorDaEntrega = input.nextDouble();
 
-        System.out.println("status");
+        System.out.println("Status");
         String status = input.next();
 
         Entrega entrega = new Entrega(id, clienteEncontrado, produtoEncontrado, valorDaEntrega, status);
 
         entregas.add(entrega);
+
+        System.out.println("Entrega cadastrada!!!");
     }
 
-    public void mostrarValorTotalProduto(Scanner input) {
+    public void mostrarValorTotal(Scanner input) {
 
-        System.out.println("Digite o ID do produto");
+        System.out.println("Digite o ID da entrega");
         int id = input.nextInt();
 
-        for (Produto p : produtos){
-            if (p.getId() == id ){
-                System.out.println("Valor total é " + p.valorTotal());
+        for (Entrega e : entregas){
+            if (e.getId() == id ){
+                System.out.println("Valor total é " + e.valorTotal(e.getProduto()));
                 return;
             }
         }
+
         System.out.println("Valor não encontrado!");
     }
 
@@ -164,8 +173,6 @@ public class Sistema {
 
         System.out.println("Entrega não encontrada.");
     }
-
-
 
     public List<Clientes> getClientes() {
         return clientes;

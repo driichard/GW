@@ -13,9 +13,10 @@ public class Produto {
         this.quantidade = quantidade;
     }
 
-    public double valorTotal () {
-        return valor * quantidade;
-    }
+  //  public double valorTotal () {
+     //   return valor * quantidade;
+
+    //}
 
     public int getId() {
         return id;

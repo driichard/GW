@@ -15,6 +15,10 @@ public class Entrega {
         this.status = status;
     }
 
+    public double valorTotal (Produto produto) {
+       return produto.getValor() * produto.getQuantidade() + valorEntrega;
+    }
+
     public void iniciarEntrega (){
         status = "Em andamento";
 

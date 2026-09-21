@@ -16,7 +16,8 @@ public class Main {
             System.out.println("1 - Cadastrar Cliente");
             System.out.println("2 - Cadastrar Produto");
             System.out.println("3 - Cadastrar Entrega");
-            System.out.println("4 - ");
+            System.out.println("4 - Mostrar valor total da compra");
+            System.out.println("5 - Iniciar Entrega");
             System.out.println("0 - Para sair");
 
             System.out.println("Escolha uma opção");
@@ -33,6 +34,14 @@ public class Main {
             } else if (escolha == 3) {
 
                 sistema.cadastrarEntrega(input);
+
+            } else if (escolha == 4) {
+
+                sistema.mostrarValorTotal(input);
+
+            } else if (escolha == 5) {
+
+                sistema.iniciarEntrega(input);
 
             } else if (escolha == 0) {
 
