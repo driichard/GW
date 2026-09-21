@@ -1,12 +1,12 @@
 package model;
 
-public class Cliente {
+public class Clientes {
     private String cpf;
     private String telefone;
     private String nome;
     private Endereco endereco;
 
-    public Cliente(String telefone, String cpf, String nome, Endereco endereco) {
+    public Clientes(String telefone, String cpf, String nome, Endereco endereco) {
         this.telefone = telefone;
         this.cpf = cpf;
         this.nome = nome;

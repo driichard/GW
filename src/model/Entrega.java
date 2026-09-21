@@ -2,22 +2,26 @@ package model;
 
 public class Entrega {
     private int id;
-    private Cliente cliente;
-    private Endereco endereco;
+    private Clientes clientes;
     private Produto produto;
     private double valorEntrega;
     private String status;
 
-    public Entrega(int id, Cliente cliente, Endereco endereco, Produto produto, double valorEntrega, String status) {
+    public Entrega(int id, Clientes clientes, Produto produto, double valorEntrega, String status) {
         this.id = id;
-        this.cliente = cliente;
-        this.endereco = endereco;
+        this.clientes = clientes;
         this.produto = produto;
         this.valorEntrega = valorEntrega;
         this.status = status;
     }
 
     public void iniciarEntrega (){
+        status = "Em andamento";
+
+    }
+
+    public String status () {
+        return status;
 
     }
 
@@ -25,16 +29,8 @@ public class Entrega {
         return id;
     }
 
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public Endereco getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
+    public Clientes getCliente() {
+        return clientes;
     }
 
     public Produto getProduto() {
