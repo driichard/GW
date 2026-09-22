@@ -1,5 +1,7 @@
 package model;
 
+import service.Valores;
+
 public class Entrega {
     private int id;
     private Clientes clientes;
@@ -15,18 +17,16 @@ public class Entrega {
         this.status = status;
     }
 
-    public double valorTotal (Produto produto) {
-       return produto.getValor() * produto.getQuantidade() + valorEntrega;
+    public double valorTotal (Valores valores) {
+       return valores.calcularValorTotal(produto, this );
     }
 
     public void iniciarEntrega (){
         status = "Em andamento";
-
     }
 
     public String status () {
         return status;
-
     }
 
     public int getId() {

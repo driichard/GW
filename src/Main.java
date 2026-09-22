@@ -1,4 +1,7 @@
-import service.Sistema;
+import service.Valores;
+import service.SistemaCliente;
+import service.SistemaEntrega;
+import service.SistemaProduto;
 
 import java.util.Scanner;
 
@@ -7,7 +10,10 @@ public class Main {
     public static void main(String[] args) {
 
         Scanner input = new Scanner(System.in);
-        Sistema sistema = new Sistema();
+        Valores valores = new Valores();
+        SistemaCliente sistemaCliente = new SistemaCliente();
+        SistemaProduto sistemaProduto = new SistemaProduto();
+        SistemaEntrega sistemaEntrega = new SistemaEntrega();
 
         int escolha = 1;
 
@@ -25,23 +31,23 @@ public class Main {
 
             if (escolha == 1) {
 
-                sistema.cadastrarCliente(input);
+               sistemaCliente.cadastrarCliente(input);
 
             } else if (escolha == 2) {
 
-                sistema.cadastrarProduto(input);
+                sistemaProduto.cadastrarProduto(input);
 
             } else if (escolha == 3) {
 
-                sistema.cadastrarEntrega(input);
+                sistemaEntrega.cadastrarEntrega(input, sistemaCliente, sistemaProduto);
 
             } else if (escolha == 4) {
 
-                sistema.mostrarValorTotal(input);
+                valores.mostrarValorTotal(input, sistemaEntrega);
 
             } else if (escolha == 5) {
 
-                sistema.iniciarEntrega(input);
+                sistemaEntrega.iniciarEntrega(input);
 
             } else if (escolha == 0) {
 
