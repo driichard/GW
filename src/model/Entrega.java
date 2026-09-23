@@ -21,10 +21,6 @@ public class Entrega {
        return valores.calcularValorTotal(produto, this );
     }
 
-    public void iniciarEntrega (){
-        status = "Em andamento";
-    }
-
     public String status () {
         return status;
     }

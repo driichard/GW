@@ -2,6 +2,8 @@ package service;
 
 import model.Clientes;
 import model.Endereco;
+import validation.ClienteValidacao;
+import validation.Validacao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,12 +60,15 @@ public class SistemaCliente {
                 endereco
         );
 
+        ClienteValidacao clienteValidacao = new ClienteValidacao();
+        clienteValidacao.validarCliente(clientes);
+
+
+
         this.clientes.add(clientes);
 
         System.out.println("Cliente cadastrado com sucesso!!!");
     }
-
-
 
     public List<Clientes> getClientes() {
         return clientes;

@@ -72,7 +72,7 @@ public class SistemaEntrega {
 
         for (Entrega entrega : entregas) {
             if (entrega.getId() == id) {
-                entrega.iniciarEntrega();
+                entrega.setStatus("Em andamento");
                 System.out.println("Entrega iniciada!");
                 return;
             }
