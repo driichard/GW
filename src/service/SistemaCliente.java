@@ -2,8 +2,9 @@ package service;
 
 import model.Clientes;
 import model.Endereco;
-import validation.ClienteValidacao;
-import validation.Validacao;
+//import validation.ErrosValidacoes;
+import validation.Validador;
+import validation.ValidadorCliente;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ public class SistemaCliente {
     private List<Clientes> clientes = new ArrayList<>();
 
     public void cadastrarCliente(Scanner input) {
+
         System.out.println("Nome:");
         String nome = input.nextLine();
         input.next();
@@ -27,7 +29,7 @@ public class SistemaCliente {
         String cep = input.next();
 
         System.out.println("Rua:");
-        String rua = input.next();
+        String rua = input.nextLine();
         input.next();
 
         System.out.println("Número:");
@@ -60,17 +62,36 @@ public class SistemaCliente {
                 endereco
         );
 
-        ClienteValidacao clienteValidacao = new ClienteValidacao();
-        clienteValidacao.validarCliente(clientes);
+        ValidadorCliente validadorCliente = new ValidadorCliente();
+
+        List<String> erros = validadorCliente.validar(clientes);
 
 
+        if (!erros.isEmpty()) {
+            for (String erro : erros) {
+                System.out.println(erro);
+            }
+            System.out.println("=======Faça o cadastro novamente=======");
 
-        this.clientes.add(clientes);
+        }
 
-        System.out.println("Cliente cadastrado com sucesso!!!");
+        List<String> erros = validadorEndereco.validar(endereco);
+
+        if (!erros.isEmpty()) {
+            for (String erro : erros) {
+                System.out.println(erro);
+            }
+            System.out.println("=======Faça o cadastro novamente=======");
+
+        }
     }
 
     public List<Clientes> getClientes() {
         return clientes;
     }
 }
+
+
+ this.clientes.add(clientes);
+
+            System.out.println("Cliente cadastrado com sucesso!!!");
