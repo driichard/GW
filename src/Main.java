@@ -28,6 +28,7 @@ public class Main {
 
             System.out.println("Escolha uma opção");
             escolha = input.nextInt();
+            input.nextLine();
 
             if (escolha == 1) {
 

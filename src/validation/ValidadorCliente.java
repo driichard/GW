@@ -21,7 +21,7 @@ import java.util.List;
                 erros.add("Nome inválido");
             }
 
-            if (cliente.getCpf() == null || !cliente.getCpf().matches("\\d{11}") || !cliente.getCpf().matches(".*[a-zA-Z].*")) {
+            if (cliente.getCpf() == null || !cliente.getCpf().matches("\\d{11}") || cliente.getCpf().matches(".*[a-zA-Z].*")) {
                 erros.add("CPF inválido");
             }
 

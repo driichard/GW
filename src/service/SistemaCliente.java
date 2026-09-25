@@ -18,34 +18,30 @@ public class SistemaCliente {
 
         System.out.println("Nome:");
         String nome = input.nextLine();
-        input.next();
 
         System.out.println("Telefone:");
-        String telefone = input.next();
+        String telefone = input.nextLine();
 
         System.out.println("CPF:");
-        String cpf = input.next();
+        String cpf = input.nextLine();
 
         System.out.println("CEP:");
-        String cep = input.next();
+        String cep = input.nextLine();
 
         System.out.println("Rua:");
         String rua = input.nextLine();
-        input.next();
 
         System.out.println("Número:");
-        String numero = input.next();
+        String numero = input.nextLine();
 
         System.out.println("Bairro:");
         String bairro = input.nextLine();
-        input.next();
 
         System.out.println("Cidade:");
         String cidade = input.nextLine();
-        input.next();
 
         System.out.println("Estado:");
-        String estado = input.next();
+        String estado = input.nextLine();
 
         Endereco endereco = new Endereco(
                 cep,
@@ -74,11 +70,9 @@ public class SistemaCliente {
             for (String erro : erros) {
                 System.out.println(erro);
             }
-            System.out.println("=======Faça o cadastro novamente=======");
-        }
 
-        if (!erros.isEmpty()) {
-            for (String erro : erros) {
+        }  if (!errosEndereco.isEmpty()) {
+            for (String erro : errosEndereco) {
                 System.out.println(erro);
             }
             System.out.println("=======Faça o cadastro novamente=======");
@@ -86,6 +80,8 @@ public class SistemaCliente {
             this.clientes.add(clientes);
             System.out.println("Cliente cadastrado com sucesso!!!");
         }
+
+
     }
 
     public List<Clientes> getClientes() {

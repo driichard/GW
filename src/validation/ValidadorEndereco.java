@@ -25,20 +25,19 @@ public class ValidadorEndereco implements Validador<Endereco> {
             errosEndereco.add("Bairro invalido");
         }
 
-        if (endereco.getCidade() == null || endereco.getCidade().isBlank() || !endereco.getCep().matches("//d+")) {
-            errosEndereco.add("Endereço invalido!");
+        if (endereco.getCidade() == null || endereco.getCidade().isBlank() || endereco.getCidade().matches("//d+")) {
+            errosEndereco.add("Cidade invalido!");
         }
 
-        if (endereco.getEstado() == null || endereco.getEstado().isBlank() || !endereco.getCep().matches("//d+")) {
+        if (endereco.getEstado() == null || endereco.getEstado().isBlank() || endereco.getEstado().matches("//d+")) {
             errosEndereco.add("Estado invalido!");
         }
 
-        if (endereco.getNumero() == null || endereco.getNumero().isBlank() || !endereco.getCep().matches("//d+")) {
-            errosEndereco.add("Numero nvalido!");
+        if (endereco.getNumero() == null || endereco.getNumero().isBlank() || !endereco.getNumero().matches("//d+")) {
+            errosEndereco.add("Numero invalido!");
         }
 
         return errosEndereco;
-
 
     }
 }
