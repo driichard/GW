@@ -5,6 +5,7 @@ import model.Endereco;
 //import validation.ErrosValidacoes;
 import validation.Validador;
 import validation.ValidadorCliente;
+import validation.ValidadorEndereco;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,8 +64,10 @@ public class SistemaCliente {
         );
 
         ValidadorCliente validadorCliente = new ValidadorCliente();
+        ValidadorEndereco validadorEndereco = new ValidadorEndereco();
 
         List<String> erros = validadorCliente.validar(clientes);
+        List<String> errosEndereco = validadorEndereco.validar(endereco);
 
 
         if (!erros.isEmpty()) {
@@ -72,17 +75,16 @@ public class SistemaCliente {
                 System.out.println(erro);
             }
             System.out.println("=======Faça o cadastro novamente=======");
-
         }
 
-        List<String> erros = validadorEndereco.validar(endereco);
-
         if (!erros.isEmpty()) {
             for (String erro : erros) {
                 System.out.println(erro);
             }
             System.out.println("=======Faça o cadastro novamente=======");
-
+        } else {
+            this.clientes.add(clientes);
+            System.out.println("Cliente cadastrado com sucesso!!!");
         }
     }
 
@@ -92,6 +94,5 @@ public class SistemaCliente {
 }
 
 
- this.clientes.add(clientes);
 
-            System.out.println("Cliente cadastrado com sucesso!!!");
+

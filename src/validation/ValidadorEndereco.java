@@ -11,33 +11,33 @@ public class ValidadorEndereco implements Validador<Endereco> {
     @Override
     public List<String> validar(Endereco endereco) {
 
-        List<String> erros = new ArrayList<>();
+        List<String> errosEndereco = new ArrayList<>();
 
         if (endereco.getCep() == null || endereco.getCep().isBlank() || !endereco.getCep().matches("//d+")) {
-            erros.add("Cep invalido!");
+            errosEndereco.add("Cep invalido!");
         }
 
         if (endereco.getRua() == null || endereco.getRua().isBlank()){
-            erros.add("Rua invalida!");
+            errosEndereco.add("Rua invalida!");
         }
 
         if (endereco.getBairro() == null || endereco.getBairro().isBlank()){
-            erros.add("Bairro invalido");
+            errosEndereco.add("Bairro invalido");
         }
 
         if (endereco.getCidade() == null || endereco.getCidade().isBlank() || !endereco.getCep().matches("//d+")) {
-            erros.add("Endereço invalido!");
+            errosEndereco.add("Endereço invalido!");
         }
 
         if (endereco.getEstado() == null || endereco.getEstado().isBlank() || !endereco.getCep().matches("//d+")) {
-            erros.add("Estado invalido!");
+            errosEndereco.add("Estado invalido!");
         }
 
         if (endereco.getNumero() == null || endereco.getNumero().isBlank() || !endereco.getCep().matches("//d+")) {
-            erros.add("Numero nvalido!");
+            errosEndereco.add("Numero nvalido!");
         }
 
-        return erros;
+        return errosEndereco;
 
 
     }
