@@ -1,6 +1,6 @@
 package model;
 
-import service.Valores;
+import controller.Valores;
 
 public class Entrega {
     private int id;
@@ -56,4 +56,10 @@ public class Entrega {
     public void setStatus(String status) {
         this.status = status;
     }
-}
+
+
+
+
+    }
+
+

@@ -3,6 +3,7 @@ package service;
 import model.Clientes;
 import model.Entrega;
 import model.Produto;
+import validation.ValidadorEntrega;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ public class SistemaEntrega {
     private List<Entrega> entregas = new ArrayList<>();
 
     public void cadastrarEntrega(Scanner input, SistemaCliente clientes, SistemaProduto sistemasProduto) {
-        System.out.println("ID");
+        System.out.println("ID entrega");
         int id = input.nextInt();
 
         System.out.println("CPF do Cliente");
@@ -32,7 +33,7 @@ public class SistemaEntrega {
             return;
         }
 
-        System.out.println("IDProduto");
+        System.out.println("ID Produto");
         int idProduto = input.nextInt();
 
         Produto produtoEncontrado = null;
@@ -48,17 +49,34 @@ public class SistemaEntrega {
             System.out.println("Produto n encontrado");
             return;
         }
+
         System.out.println("Valor da entrega");
         double valorDaEntrega = input.nextDouble();
 
+        input.nextLine();
+
         System.out.println("Status");
-        String status = input.next();
+        String status = input.nextLine();
 
         Entrega entrega = new Entrega(id, clienteEncontrado, produtoEncontrado, valorDaEntrega, status);
+        Valores valores = new Valores();
+        ValidadorEntrega validadorEntrega = new ValidadorEntrega ();
 
-        entregas.add(entrega);
+        List<String> errosEntrega = validadorEntrega.validar(entrega);
 
-        System.out.println("Entrega cadastrada!!!");
+        if (!errosEntrega.isEmpty()){
+            for (String erro : errosEntrega) {
+                System.out.println(erro);
+            }
+
+            System.out.println("===== Faça o cadastro novamente =====");
+
+        }else {
+            entregas.add(entrega);
+            System.out.println( "Valor total da compra + frete"+ " " + valores.calcularValorTotal(produtoEncontrado, entrega)+ "R$");
+          //  System.out.println(entrega.valorTotal());
+            System.out.println("Entrega cadastrada!!!");
+        }
     }
 
     public List<Entrega> getEntregas() {

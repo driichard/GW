@@ -19,13 +19,13 @@ public class SistemaCliente {
         System.out.println("Nome:");
         String nome = input.nextLine();
 
-        System.out.println("Telefone:");
+        System.out.println("Telefone (Digite com ddd): ");
         String telefone = input.nextLine();
 
-        System.out.println("CPF:");
+        System.out.println("CPF (Apenas numero):");
         String cpf = input.nextLine();
 
-        System.out.println("CEP:");
+        System.out.println("CEP (Apenas numero):");
         String cep = input.nextLine();
 
         System.out.println("Rua:");
@@ -80,8 +80,6 @@ public class SistemaCliente {
             this.clientes.add(clientes);
             System.out.println("Cliente cadastrado com sucesso!!!");
         }
-
-
     }
 
     public List<Clientes> getClientes() {

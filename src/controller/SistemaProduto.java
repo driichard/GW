@@ -1,6 +1,7 @@
 package service;
 
 import model.Produto;
+import validation.ValidadorProduto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +14,11 @@ public class SistemaProduto  {
         System.out.println("nome do produto:");
         String tipoDeProduto = input.next();
 
-        System.out.println("id:");
+        System.out.println("ID produto:");
         int id = input.nextInt();
 
         System.out.println("Valor:");
-        Double valor = input.nextDouble();
+        double valor = input.nextDouble();
 
         System.out.println("Quantidade:");
         int quantidade = input.nextInt();
@@ -27,13 +28,24 @@ public class SistemaProduto  {
                 valor,
                 quantidade);
 
-        produtos.add(produto);
+        ValidadorProduto validadorProduto = new ValidadorProduto();
+        List<String> errosProduto = validadorProduto.validar(produto);
 
-        System.out.println("Produto cadastrado com sucesso!!!");
+        if(!errosProduto.isEmpty()) {
+            for (String erro : errosProduto) {
+                System.out.println(erro);
+            }
+            System.out.println("===== Cadastrar ptoduto novamente =====");
+
+        } else {
+            produtos.add(produto);
+
+            System.out.println("Valor da compra" + " " + valor * quantidade + "R$");
+            System.out.println("Produto cadastrado com sucesso!!!");
+        }
     }
 
     public List<Produto> getProdutos() {
         return produtos;
     }
-
 }
