@@ -13,10 +13,6 @@ import java.util.List;
 
             List<String> erros = new ArrayList<>();
 
-            // if (cliente.get() <= 0) {
-            //  erros.add("ID inválido");
-            //  }
-
             if (cliente.getNome() == null || cliente.getNome().isBlank()) {
                 erros.add("Nome inválido");
             }
