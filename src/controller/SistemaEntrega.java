@@ -1,4 +1,4 @@
-package service;
+package controller;
 
 import model.Clientes;
 import model.Entrega;
@@ -69,13 +69,16 @@ public class SistemaEntrega {
                 System.out.println(erro);
             }
 
-            System.out.println("===== Faça o cadastro novamente =====");
+            System.out.println("===== Faça o cadastro novamente!!! =====");
 
         }else {
             entregas.add(entrega);
-            System.out.println( "Valor total da compra + frete"+ " " + valores.calcularValorTotal(produtoEncontrado, entrega)+ "R$");
+            System.out.printf(
+                    "Valor total da compra + frete: %.3f R$%n",
+                    valores.calcularValorTotal(produtoEncontrado, entrega)
+            );
           //  System.out.println(entrega.valorTotal());
-            System.out.println("Entrega cadastrada!!!");
+            System.out.println("===== Entrega cadastrada!!! =====");
         }
     }
 
@@ -91,12 +94,33 @@ public class SistemaEntrega {
         for (Entrega entrega : entregas) {
             if (entrega.getId() == id) {
                 entrega.setStatus("Em andamento");
-                System.out.println("Entrega iniciada!");
+                System.out.println("===== Entrega iniciada!!! =====");
                 return;
             }
         }
 
-        System.out.println("Entrega não encontrada.");
+        System.out.println("===== Entrega não encontrada!!! =====.");
+    }
+
+    public void cancelarEntrega(Scanner input) {
+
+        System.out.println("ID da entrega:");
+        int id = input.nextInt();
+
+        for (Entrega entrega : entregas) {
+            if (entrega.getId() == id) {
+                entrega.setStatus("Entrega cancelada");
+                System.out.println(entrega.status());
+                return;
+            }
+        }
+
+        System.out.println("===== Entrega não encontrada!!! =====.");
     }
 }
+
+
+
+
+
 

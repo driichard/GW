@@ -17,11 +17,11 @@ import java.util.List;
                 erros.add("Nome inválido");
             }
 
-            if (cliente.getCpf() == null || !cliente.getCpf().matches("\\d{11}") || cliente.getCpf().matches(".*[a-zA-Z].*")) {
+            if (cliente.getCpf() == null || !cliente.getCpf().matches("\\d{11}") || cliente.getCpf().isBlank()) {
                 erros.add("CPF inválido");
             }
 
-            if (cliente.getTelefone() == null || !cliente.getTelefone().matches("\\d{11}") || cliente.getTelefone().matches(".*[a-zA-Z].*")) {
+            if (cliente.getTelefone() == null || !cliente.getTelefone().matches("\\d{11}") || cliente.getTelefone().isBlank()) {
                 erros.add("Telefone inválido");
             }
 

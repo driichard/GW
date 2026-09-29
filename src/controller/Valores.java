@@ -1,9 +1,7 @@
-package service;
+package controller;
 
 import model.Entrega;
 import model.Produto;
-
-import java.util.Scanner;
 
 public class Valores {
 

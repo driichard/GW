@@ -1,4 +1,4 @@
-package service;
+package controller;
 
 import model.Produto;
 import validation.ValidadorProduto;
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class SistemaProduto  {
+public class SistemaProduto {
     private List<Produto> produtos = new ArrayList<>();
 
     public void cadastrarProduto(Scanner input) {
@@ -40,8 +40,8 @@ public class SistemaProduto  {
         } else {
             produtos.add(produto);
 
-            System.out.println("Valor da compra" + " " + valor * quantidade + "R$");
-            System.out.println("Produto cadastrado com sucesso!!!");
+            System.out.printf("Valor da compra: %.2f R$%n", valor * quantidade);
+            System.out.println("===== Produto cadastrado com sucesso!!! =====");
         }
     }
 

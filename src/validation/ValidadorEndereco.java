@@ -14,27 +14,27 @@ public class ValidadorEndereco implements Validador<Endereco> {
         List<String> errosEndereco = new ArrayList<>();
 
         if (endereco.getCep() == null || endereco.getCep().isBlank() || !endereco.getCep().matches("\\d+")) {
-            errosEndereco.add("Cep invalido!");
+            errosEndereco.add("Cep inválido!");
         }
 
         if (endereco.getRua() == null || endereco.getRua().isBlank()){
-            errosEndereco.add("Rua invalida!");
+            errosEndereco.add("Rua inválido!");
         }
 
         if (endereco.getBairro() == null || endereco.getBairro().isBlank()){
-            errosEndereco.add("Bairro invalido");
+            errosEndereco.add("Bairro inválido");
         }
 
         if (endereco.getCidade() == null || endereco.getCidade().isBlank() || endereco.getCidade().matches("\\d+")) {
-            errosEndereco.add("Cidade invalido!");
+            errosEndereco.add("Cidade inválido!");
         }
 
         if (endereco.getEstado() == null || endereco.getEstado().isBlank() || endereco.getEstado().matches("\\d+")) {
-            errosEndereco.add("Estado invalido!");
+            errosEndereco.add("Estado inválido!");
         }
 
         if (endereco.getNumero() == null || endereco.getNumero().isBlank() || !endereco.getNumero().matches("\\d+")) {
-            errosEndereco.add("Numero invalido!");
+            errosEndereco.add("Numero inválido!");
         }
 
         return errosEndereco;

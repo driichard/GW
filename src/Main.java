@@ -1,7 +1,7 @@
-import service.Valores;
-import service.SistemaCliente;
-import service.SistemaEntrega;
-import service.SistemaProduto;
+import controller.Valores;
+import controller.SistemaCliente;
+import controller.SistemaEntrega;
+import controller.SistemaProduto;
 
 import java.util.Scanner;
 
@@ -22,8 +22,8 @@ public class Main {
             System.out.println("1 - Cadastrar Cliente");
             System.out.println("2 - Cadastrar Produto");
             System.out.println("3 - Cadastrar Entrega");
-            System.out.println("4 - Mostrar valor total da compra");
-            System.out.println("5 - Iniciar Entrega");
+            System.out.println("4 - Iniciar Entrega");
+            System.out.println("5 - Cancelar Entrega");
             System.out.println("0 - Para sair");
 
             System.out.println("Escolha uma opção");
@@ -44,11 +44,11 @@ public class Main {
 
             } else if (escolha == 4) {
 
-                valores.mostrarValorTotal(input, sistemaEntrega);
+                sistemaEntrega.iniciarEntrega(input);
 
             } else if (escolha == 5) {
 
-                sistemaEntrega.iniciarEntrega(input);
+                sistemaEntrega.cancelarEntrega(input);
 
             } else if (escolha == 0) {
 

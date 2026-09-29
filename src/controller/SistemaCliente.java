@@ -1,9 +1,8 @@
-package service;
+package controller;
 
 import model.Clientes;
 import model.Endereco;
 //import validation.ErrosValidacoes;
-import validation.Validador;
 import validation.ValidadorCliente;
 import validation.ValidadorEndereco;
 
@@ -78,7 +77,7 @@ public class SistemaCliente {
             System.out.println("=======Faça o cadastro novamente=======");
         } else {
             this.clientes.add(clientes);
-            System.out.println("Cliente cadastrado com sucesso!!!");
+            System.out.println("===== Cliente cadastrado com sucesso!!! =====");
         }
     }
 
