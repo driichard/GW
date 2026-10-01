@@ -1,20 +1,20 @@
 package model;
 
 public class Clientes {
-    private String cpf;
+    private String documento;
     private String telefone;
     private String nome;
     private Endereco endereco;
 
-    public Clientes(String telefone, String cpf, String nome, Endereco endereco) {
+    public Clientes(String telefone, String documento, String nome, Endereco endereco) {
         this.telefone = telefone;
-        this.cpf = cpf;
+        this.documento = documento;
         this.nome = nome;
         this.endereco = endereco;
     }
 
-    public String getCpf() {
-        return cpf;
+    public String getDocumento() {
+        return documento;
     }
 
     public String getTelefone() {

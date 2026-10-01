@@ -12,7 +12,7 @@ public class SistemaProduto {
 
     public void cadastrarProduto(Scanner input) {
         System.out.println("nome do produto:");
-        String tipoDeProduto = input.next();
+        String nomeDoProduto = input.next();
 
         System.out.println("ID produto:");
         int id = input.nextInt();
@@ -24,7 +24,7 @@ public class SistemaProduto {
         int quantidade = input.nextInt();
 
         Produto produto = new Produto(id,
-                tipoDeProduto,
+                nomeDoProduto,
                 valor,
                 quantidade);
 

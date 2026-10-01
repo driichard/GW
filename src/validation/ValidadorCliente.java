@@ -1,7 +1,6 @@
 package validation;
 
 import model.Clientes;
-import model.Endereco;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +16,8 @@ import java.util.List;
                 erros.add("Nome inválido");
             }
 
-            if (cliente.getCpf() == null || !cliente.getCpf().matches("\\d{11}") || cliente.getCpf().isBlank()) {
-                erros.add("CPF inválido");
+            if (cliente.getDocumento() == null || !cliente.getDocumento().matches("\\d{14}") || cliente.getDocumento().isBlank()) {
+                erros.add("CPF OU CNPJ inválido");
             }
 
             if (cliente.getTelefone() == null || !cliente.getTelefone().matches("\\d{11}") || cliente.getTelefone().isBlank()) {

@@ -16,13 +16,13 @@ public class SistemaEntrega {
         System.out.println("ID entrega");
         int id = input.nextInt();
 
-        System.out.println("CPF do Cliente");
-        String cpf = input.next();
+        System.out.println("CPF ou CNPJ do Cliente");
+        String documento = input.next();
 
         Clientes clienteEncontrado = null;
 
         for (Clientes c : clientes.getClientes()){
-            if (c.getCpf().equals(cpf)) {
+            if (c.getDocumento().equals(documento)) {
                 clienteEncontrado = c;
                 break;
             }
@@ -71,7 +71,7 @@ public class SistemaEntrega {
 
             System.out.println("===== Faça o cadastro novamente!!! =====");
 
-        }else {
+        } else {
             entregas.add(entrega);
             System.out.printf(
                     "Valor total da compra + frete: %.3f R$%n",
@@ -94,6 +94,7 @@ public class SistemaEntrega {
         for (Entrega entrega : entregas) {
             if (entrega.getId() == id) {
                 entrega.setStatus("Em andamento");
+                System.out.println("Status" + entrega.status());
                 System.out.println("===== Entrega iniciada!!! =====");
                 return;
             }
@@ -109,8 +110,9 @@ public class SistemaEntrega {
 
         for (Entrega entrega : entregas) {
             if (entrega.getId() == id) {
-                entrega.setStatus("Entrega cancelada");
-                System.out.println(entrega.status());
+                entrega.setStatus("Cancelada");
+                System.out.println("Status" + entrega.status());
+                System.out.println("===== Entrega cancelada!!! =====");
                 return;
             }
         }

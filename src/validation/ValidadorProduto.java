@@ -23,8 +23,7 @@ public class ValidadorProduto implements Validador <Produto> {
             errosProduto.add("Valor inválido");
         }
 
-
-        if (produto.getTipoDeProduto() == null || produto.getTipoDeProduto().matches("\\d+")) {
+        if (produto.getNomeDoProduto() == null || produto.getNomeDoProduto().matches("\\d+")) {
             errosProduto.add("Nome do Produto inválido");
         }
 

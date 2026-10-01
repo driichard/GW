@@ -21,10 +21,10 @@ public class SistemaCliente {
         System.out.println("Telefone (Digite com ddd): ");
         String telefone = input.nextLine();
 
-        System.out.println("CPF (Apenas numero):");
-        String cpf = input.nextLine();
+        System.out.println("CPF ou CNPJ (Apenas número):");
+        String documento = input.nextLine();
 
-        System.out.println("CEP (Apenas numero):");
+        System.out.println("CEP (Apenas número):");
         String cep = input.nextLine();
 
         System.out.println("Rua:");
@@ -53,7 +53,7 @@ public class SistemaCliente {
 
         Clientes clientes = new Clientes(
                 telefone,
-                cpf,
+                documento,
                 nome,
                 endereco
         );

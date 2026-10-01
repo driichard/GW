@@ -2,13 +2,13 @@ package model;
 
 public class Produto {
     private int id;
-    private String tipoDeProduto;
+    private String nomeDoProduto;
     private double valor;
     private int quantidade;
 
-    public Produto(int id, String tipoDeProduto, double valor, int quantidade) {
+    public Produto(int id, String nomeDoProduto, double valor, int quantidade) {
         this.id = id;
-        this.tipoDeProduto = tipoDeProduto;
+        this.nomeDoProduto = nomeDoProduto;
         this.valor = valor;
         this.quantidade = quantidade;
     }
@@ -17,12 +17,12 @@ public class Produto {
         return id;
     }
 
-    public String getTipoDeProduto() {
-        return tipoDeProduto;
+    public String getNomeDoProduto() {
+        return nomeDoProduto;
     }
 
-    public void setTipoDeProduto(String tipoDeProduto) {
-        this.tipoDeProduto = tipoDeProduto;
+    public void setNomeDoProduto(String nomeDoProduto) {
+        this.nomeDoProduto = nomeDoProduto;
     }
 
     public double getValor() {
