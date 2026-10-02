@@ -35,7 +35,7 @@ public class SistemaProduto {
             for (String erro : errosProduto) {
                 System.out.println(erro);
             }
-            System.out.println("===== Cadastrar ptoduto novamente =====");
+            System.out.println("===== Cadastrar o produto novamente =====");
 
         } else {
             produtos.add(produto);

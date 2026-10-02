@@ -1,0 +1,50 @@
+CREATE TABLE endereco (
+	id SERIAL PRIMARY KEY,
+	cep CHAR(8) NOT NULL,
+	rua VARCHAR(50) NOT NULL,
+	numero VARCHAR(8) NOT NULL,
+	bairro VARCHAR(50) NOT NULL,
+	cidade VARCHAR(50) NOT NULL,
+	estado CHAR(2) NOT NULL
+);
+
+CREATE TABLE cliente (
+	id SERIAL PRIMARY KEY,
+	documento CHAR(11) NOT NULL UNIQUE,
+	telefone CHAR(11) NOT NULL,
+	nome VARCHAR(50) NOT NULL,
+	endereco_id INTEGER NOT NULL,
+	FOREIGN KEY (endereco_id) REFERENCES endereco(id)
+);
+
+CREATE TABLE produto (
+	id SERIAL PRIMARY KEY,
+	identificador_produto INTEGER NOT NULL UNIQUE,
+	nome_do_produto VARCHAR(100) NOT NULL,
+	valor NUMERIC(10,2) NOT NULL,
+	quantidade INTEGER NOT NULL
+);
+
+CREATE TABLE entrega (
+	id SERIAL PRIMARY KEY,
+	identificador_entrega INTEGER NOT NULL UNIQUE,
+	valor_entrega NUMERIC(10,2) NOT NULL,
+	status VARCHAR(50) NOT NULL,
+	cliente_documento CHAR(11) NOT NULL,
+
+	FOREIGN KEY (cliente_id) REFERENCES cliente(id)
+
+);
+
+CREATE TABLE item_entrega (
+	id SERIAL PRIMARY KEY,
+	entrega_id INTEGER NOT NULL UNIQUE,
+	produto_id INTEGER NOT NULL UNIQUE,
+	quantidade INTEGER NOT NULL,
+	valor_unitario NUMERIC(10,2) NOT NULL,
+
+	FOREIGN KEY (entrega_id) REFERENCES entrega(id),
+	FOREIGN KEY (produto_id) REFERENCES produto(id),
+
+
+);
