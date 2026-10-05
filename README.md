@@ -1,3 +1,7 @@
 ## Diagrama do Banco de Dados
 
-![Diagrama do Banco de Dados](https://docs.google.com/document/d/1ozj9SBZmTCgLHO86CWUOB0dLv2xFNZ2_JubN4ZaCQRE/edit?usp=sharing)
+![Diagrama do Banco de Dados]
+
+
+
+<img width="1250" height="903" alt="diagrama" src="https://github.com/user-attachments/assets/e8bc5381-b8c3-4e24-b623-b875280c2518" />
