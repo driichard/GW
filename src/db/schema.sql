@@ -13,6 +13,7 @@ CREATE TABLE cliente (
                          telefone    CHAR(11)    NOT NULL,
                          nome        VARCHAR(50) NOT NULL,
                          endereco_id INTEGER     NOT NULL,
+
                          FOREIGN KEY (endereco_id) REFERENCES endereco (id)
 );
 CREATE TABLE produto (
@@ -27,6 +28,7 @@ CREATE TABLE entrega (
                          valor_entrega         NUMERIC(10, 2) NOT NULL,
                          status                VARCHAR(50)    NOT NULL,
                          cliente_id            INTEGER        NOT NULL,
+
                          FOREIGN KEY (cliente_id) REFERENCES cliente (id)
 );
 CREATE TABLE item_entrega (
@@ -35,6 +37,9 @@ CREATE TABLE item_entrega (
                               produto_id     INTEGER        NOT NULL UNIQUE,
                               quantidade     INTEGER        NOT NULL,
                               valor_unitario NUMERIC(10, 2) NOT NULL,
+
                               FOREIGN KEY (entrega_id) REFERENCES entrega (id),
                               FOREIGN KEY (produto_id) REFERENCES produto (id),
+
+                              UNIQUE (entrega_id, produto_id)
 );
