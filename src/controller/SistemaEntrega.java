@@ -11,8 +11,8 @@ public class SistemaEntrega {
     private List<Entrega> entregas = new ArrayList<>();
 
     public void cadastrarEntrega(Scanner input, SistemaCliente clientes, SistemaProduto sistemasProduto) {
-        System.out.println("Identificador da entrega");
-        int identificador = input.nextInt();
+        System.out.println("código da entrega");
+        int codigoDaEntrega = input.nextInt();
         input.nextLine();
 
         System.out.println("CPF ou CNPJ do Cliente");
@@ -32,13 +32,13 @@ public class SistemaEntrega {
             return;
         }
 
-        System.out.println("Identificador do volume");
-        int identificadorProduto = input.nextInt();
+        System.out.println("código do volume");
+        int codigoDoProduto = input.nextInt();
 
         Produto produtoEncontrado = null;
 
         for (Produto p : sistemasProduto.getProdutos()){
-            if (p.getIdentificador() == identificadorProduto){
+            if (p.getCodigo() == codigoDoProduto){
                 produtoEncontrado = p;
                 break;
             }
@@ -60,7 +60,7 @@ public class SistemaEntrega {
 
         double valorEntrega = Frete.calculular(itens);
 
-        Entrega entrega = new Entrega(identificador, clienteEncontrado, itens , valorEntrega, StatusEntrega.PENDENTE);
+        Entrega entrega = new Entrega(codigoDaEntrega, clienteEncontrado, itens , valorEntrega, StatusEntrega.PENDENTE);
 
         ValidadorEntrega validadorEntrega = new ValidadorEntrega ();
 
@@ -94,7 +94,7 @@ public class SistemaEntrega {
 
         for (Entrega entrega : entregas) {
             System.out.println(
-                    "Identificador: " + entrega.getIdentificador()
+                    "Identificador: " + entrega.getCodigo()
                             + " | Cliente: " + entrega.getCliente().getNome()
                             + " (" + entrega.getCliente().getDocumento() + ")"
                             + " | Destino: " + entrega.getCliente().getEndereco().getCidade()
@@ -169,12 +169,12 @@ public class SistemaEntrega {
     }
 
     private Entrega buscarEntrega(Scanner input) {
-        System.out.println("Identificador da entrega:");
-        int identificador = input.nextInt();
+        System.out.println("codigo da entrega:");
+        int codigoDaEntrega = input.nextInt();
         input.nextLine();
 
         for (Entrega entrega : entregas) {
-            if (entrega.getIdentificador() == identificador) {
+            if (entrega.getCodigo() == codigoDaEntrega) {
                 return entrega;
             }
         }

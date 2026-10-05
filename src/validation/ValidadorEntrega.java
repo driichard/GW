@@ -12,7 +12,7 @@ public class ValidadorEntrega implements Validador<Entrega> {
     public List<String> validar(Entrega entrega) {
         List<String> errosEntrega = new ArrayList<>();
 
-        if (entrega.getIdentificador() <= 0) {
+        if (entrega.getCodigo() <= 0) {
             errosEntrega.add("Identificador inválido");
         }
 

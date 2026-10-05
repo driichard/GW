@@ -17,17 +17,17 @@ CREATE TABLE cliente (
                          FOREIGN KEY (endereco_id) REFERENCES endereco (id)
 );
 CREATE TABLE produto (
-                         id                    SERIAL PRIMARY KEY,
-                         identificador_produto INTEGER        NOT NULL UNIQUE,
-                         nome_do_produto       VARCHAR(100)   NOT NULL,
-                         valor                 NUMERIC(10, 2) NOT NULL
+                         id      SERIAL PRIMARY KEY,
+                         codigo INTEGER  NOT NULL UNIQUE,
+                         nome   VARCHAR(100)   NOT NULL,
+                         valor  NUMERIC(10, 2) NOT NULL
 );
 CREATE TABLE entrega (
-                         id                    SERIAL PRIMARY KEY,
-                         identificador_entrega INTEGER        NOT NULL UNIQUE,
-                         valor_entrega         NUMERIC(10, 2) NOT NULL,
-                         status                VARCHAR(50)    NOT NULL,
-                         cliente_id            INTEGER        NOT NULL,
+                         id            SERIAL PRIMARY KEY,
+                         codigo        INTEGER        NOT NULL UNIQUE,
+                         valor         NUMERIC(10, 2) NOT NULL,
+                         status        VARCHAR(50)    NOT NULL,
+                         cliente_id    INTEGER        NOT NULL,
 
                          FOREIGN KEY (cliente_id) REFERENCES cliente (id)
 );

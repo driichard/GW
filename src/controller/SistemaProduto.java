@@ -11,17 +11,17 @@ public class SistemaProduto {
     private List<Produto> produtos = new ArrayList<>();
 
     public void cadastrarProduto(Scanner input) {
-        System.out.println("Nome do produto/valume:");
-        String nomeDoProduto = input.nextLine();
+        System.out.println("Nome do produto/volume:");
+        String nome = input.nextLine();
 
-        System.out.println("Identificador do volume:");
-        int identificador = input.nextInt();
+        System.out.println("código do volume:");
+        int codigo = input.nextInt();
 
         System.out.println("Valor declarado (quanto vale a mercadoria do volume):");
         double valor = input.nextDouble();
         input.nextLine();
 
-        Produto produto = new Produto(identificador, nomeDoProduto, valor);
+        Produto produto = new Produto(codigo, nome, valor);
 
         ValidadorProduto validadorProduto = new ValidadorProduto();
         List<String> errosProduto = validadorProduto.validar(produto);

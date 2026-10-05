@@ -1,18 +1,18 @@
 package model;
 
 public class Produto {
-    private int identificador;
+    private int codigo;
     private String nomeDoProduto;
     private double valor;
 
-    public Produto(int identificador, String nomeDoProduto, double valor) {
-        this.identificador = identificador;
+    public Produto(int codigo, String nomeDoProduto, double valor) {
+        this.codigo = codigo;
         this.nomeDoProduto = nomeDoProduto;
         this.valor = valor;
     }
 
-    public int getIdentificador() {
-        return identificador;
+    public int getCodigo() {
+        return codigo;
     }
 
     public String getNomeDoProduto() {
