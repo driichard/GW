@@ -11,7 +11,7 @@ public class ValidadorProduto implements Validador<Produto> {
     public List<String> validar(Produto produto) {
         List<String> errosProduto = new ArrayList<>();
 
-        if (produto.getIdentificador() <= -0) {
+        if (produto.getIdentificador() <= -1) {
             errosProduto.add("Identificador inválido");
         }
 

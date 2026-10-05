@@ -91,16 +91,16 @@ public class SistemaEntrega {
         }
 
         System.out.println("===== Entregas =====");
+
         for (Entrega entrega : entregas) {
-            System.out.printf(
-                    "Identificador: %d | Cliente: %s (%s) | Destino: %s/%s | Status: %s | Frete: %.2f%n",
-                    entrega.getIdentificador(),
-                    entrega.getCliente().getNome(),
-                    entrega.getCliente().getDocumento(),
-                    entrega.getCliente().getEndereco().getCidade(),
-                    entrega.getCliente().getEndereco().getEstado(),
-                    entrega.getStatus(),
-                    entrega.getValorEntrega()
+            System.out.println(
+                    "Identificador: " + entrega.getIdentificador()
+                            + " | Cliente: " + entrega.getCliente().getNome()
+                            + " (" + entrega.getCliente().getDocumento() + ")"
+                            + " | Destino: " + entrega.getCliente().getEndereco().getCidade()
+                            + "/" + entrega.getCliente().getEndereco().getEstado()
+                            + " | Status: " + entrega.getStatus()
+                            + " | Frete: " + entrega.getValorEntrega() + " R$"
             );
         }
     }
