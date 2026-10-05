@@ -3,5 +3,5 @@
 ![Diagrama do Banco de Dados]
 
 
+<img width="1495" height="909" alt="diagrama01" src="https://github.com/user-attachments/assets/84de6972-c83d-4102-8382-90e360c79bef" />
 
-<img width="1250" height="903" alt="diagrama" src="https://github.com/user-attachments/assets/e8bc5381-b8c3-4e24-b623-b875280c2518" />
