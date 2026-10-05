@@ -5,26 +5,24 @@ import model.Produto;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ValidadorProduto implements Validador <Produto> {
+public class ValidadorProduto implements Validador<Produto> {
 
     @Override
-    public List<String> validar (Produto produto) {
-        List <String> errosProduto = new ArrayList<>();
+    public List<String> validar(Produto produto) {
+        List<String> errosProduto = new ArrayList<>();
 
-        if (String.valueOf(produto.getId()) == null || !String.valueOf(produto.getId()).matches("\\d+")) {
-            errosProduto.add("ID inválido");
+        if (produto.getIdentificador() <= -0) {
+            errosProduto.add("Identificador inválido");
         }
 
-        if (String.valueOf(produto.getQuantidade()) == null || !String.valueOf(produto.getQuantidade()).matches("\\d+")) {
-            errosProduto.add("Quantidade inválido");
+        if (produto.getValor() <= 0) {
+            errosProduto.add("Valor declarado inválido");
         }
 
-        if (produto.getValor() <= -1) {
-            errosProduto.add("Valor inválido");
-        }
-
-        if (produto.getNomeDoProduto() == null || produto.getNomeDoProduto().matches("\\d+")) {
-            errosProduto.add("Nome do Produto inválido");
+        if (produto.getNomeDoProduto() == null
+                || produto.getNomeDoProduto().isBlank()
+                || produto.getNomeDoProduto().matches("\\d+")) {
+            errosProduto.add("Nome do volume inválido");
         }
 
         return errosProduto;

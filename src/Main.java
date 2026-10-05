@@ -1,4 +1,3 @@
-import controller.Valores;
 import controller.SistemaCliente;
 import controller.SistemaEntrega;
 import controller.SistemaProduto;
@@ -10,7 +9,6 @@ public class Main {
     public static void main(String[] args) {
 
         Scanner input = new Scanner(System.in);
-        Valores valores = new Valores();
         SistemaCliente sistemaCliente = new SistemaCliente();
         SistemaProduto sistemaProduto = new SistemaProduto();
         SistemaEntrega sistemaEntrega = new SistemaEntrega();
@@ -20,10 +18,12 @@ public class Main {
         while (escolha != 0) {
 
             System.out.println("1 - Cadastrar Cliente");
-            System.out.println("2 - Cadastrar Produto");
+            System.out.println("2 - Cadastrar produto/volume");
             System.out.println("3 - Cadastrar Entrega");
             System.out.println("4 - Iniciar Entrega");
-            System.out.println("5 - Cancelar Entrega");
+            System.out.println("5 - Concluir Entrega");
+            System.out.println("6 - Cancelar Entrega");
+            System.out.println("7 - Listar Entregas");
             System.out.println("0 - Para sair");
 
             System.out.println("Escolha uma opção");
@@ -32,7 +32,7 @@ public class Main {
 
             if (escolha == 1) {
 
-               sistemaCliente.cadastrarCliente(input);
+                sistemaCliente.cadastrarCliente(input);
 
             } else if (escolha == 2) {
 
@@ -48,7 +48,15 @@ public class Main {
 
             } else if (escolha == 5) {
 
+                sistemaEntrega.concluirEntrega(input);
+
+            } else if (escolha == 6) {
+
                 sistemaEntrega.cancelarEntrega(input);
+
+            } else if (escolha == 7) {
+
+                sistemaEntrega.listarEntregas();
 
             } else if (escolha == 0) {
 

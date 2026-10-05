@@ -1,8 +1,6 @@
 package controller;
 
-import model.Clientes;
-import model.Entrega;
-import model.Produto;
+import model.*;
 import validation.ValidadorEntrega;
 
 import java.util.ArrayList;
@@ -13,11 +11,12 @@ public class SistemaEntrega {
     private List<Entrega> entregas = new ArrayList<>();
 
     public void cadastrarEntrega(Scanner input, SistemaCliente clientes, SistemaProduto sistemasProduto) {
-        System.out.println("ID entrega");
-        int id = input.nextInt();
+        System.out.println("Identificador da entrega");
+        int identificador = input.nextInt();
+        input.nextLine();
 
         System.out.println("CPF ou CNPJ do Cliente");
-        String documento = input.next();
+        String documento = input.nextLine();
 
         Clientes clienteEncontrado = null;
 
@@ -33,51 +32,50 @@ public class SistemaEntrega {
             return;
         }
 
-        System.out.println("ID Produto");
-        int idProduto = input.nextInt();
+        System.out.println("Identificador do volume");
+        int identificadorProduto = input.nextInt();
 
         Produto produtoEncontrado = null;
 
         for (Produto p : sistemasProduto.getProdutos()){
-            if (p.getId() == idProduto){
+            if (p.getIdentificador() == identificadorProduto){
                 produtoEncontrado = p;
                 break;
             }
         }
 
         if (produtoEncontrado == null){
-            System.out.println("Produto n encontrado");
+            System.out.println("Volume não encontrado");
             return;
         }
 
-        System.out.println("Valor da entrega");
-        double valorDaEntrega = input.nextDouble();
-
+        System.out.println("Quantidade de volumes");
+        int quantidadeItem = input.nextInt();
         input.nextLine();
 
-        System.out.println("Status");
-        String status = input.nextLine();
+        ItemEntrega item = new ItemEntrega(produtoEncontrado, quantidadeItem);
 
-        Entrega entrega = new Entrega(id, clienteEncontrado, produtoEncontrado, valorDaEntrega, status);
-        Valores valores = new Valores();
+        List<ItemEntrega> itens = new ArrayList<>();
+        itens.add(item);
+
+        double valorEntrega = Frete.calculular(itens);
+
+        Entrega entrega = new Entrega(identificador, clienteEncontrado, itens , valorEntrega, StatusEntrega.PENDENTE);
+
         ValidadorEntrega validadorEntrega = new ValidadorEntrega ();
 
         List<String> errosEntrega = validadorEntrega.validar(entrega);
 
-        if (!errosEntrega.isEmpty()){
+        if (!errosEntrega.isEmpty()) {
             for (String erro : errosEntrega) {
                 System.out.println(erro);
             }
-
             System.out.println("===== Faça o cadastro novamente!!! =====");
-
         } else {
             entregas.add(entrega);
-            System.out.printf(
-                    "Valor total da compra + frete: %.3f R$%n",
-                    valores.calcularValorTotal(produtoEncontrado, entrega)
-            );
-          //  System.out.println(entrega.valorTotal());
+            System.out.println("Valor declarado: " + produtoEncontrado.getValor() + " R$ por volume");
+            System.out.println("Frete a pagar: " + entrega.getValorEntrega() + " R$");
+            System.out.println("Status: " + entrega.getStatus());
             System.out.println("===== Entrega cadastrada!!! =====");
         }
     }
@@ -86,43 +84,102 @@ public class SistemaEntrega {
         return entregas;
     }
 
-    public void iniciarEntrega(Scanner input) {
-
-        System.out.println("ID da entrega:");
-        int id = input.nextInt();
-
-        for (Entrega entrega : entregas) {
-            if (entrega.getId() == id) {
-                entrega.setStatus("Em andamento");
-                System.out.println("Status" + entrega.status());
-                System.out.println("===== Entrega iniciada!!! =====");
-                return;
-            }
+    public void listarEntregas() {
+        if (entregas.isEmpty()) {
+            System.out.println("===== Nenhuma entrega cadastrada =====");
+            return;
         }
 
-        System.out.println("===== Entrega não encontrada!!! =====.");
+        System.out.println("===== Entregas =====");
+        for (Entrega entrega : entregas) {
+            System.out.printf(
+                    "Identificador: %d | Cliente: %s (%s) | Destino: %s/%s | Status: %s | Frete: %.2f%n",
+                    entrega.getIdentificador(),
+                    entrega.getCliente().getNome(),
+                    entrega.getCliente().getDocumento(),
+                    entrega.getCliente().getEndereco().getCidade(),
+                    entrega.getCliente().getEndereco().getEstado(),
+                    entrega.getStatus(),
+                    entrega.getValorEntrega()
+            );
+        }
+    }
+
+    public void iniciarEntrega(Scanner input) {
+        Entrega entrega = buscarEntrega(input);
+        if (entrega == null) {
+            return;
+        }
+
+        if (entrega.getStatus() == StatusEntrega.CANCELADA) {
+            System.out.println("===== Não é possível iniciar uma entrega cancelada =====");
+            return;
+        }
+
+        if (entrega.getStatus() == StatusEntrega.ENTREGUE) {
+            System.out.println("===== Não é possível iniciar uma entrega já concluída =====");
+            return;
+        }
+
+        if (entrega.getStatus() == StatusEntrega.EM_ANDAMENTO) {
+            System.out.println("===== Entrega já está em andamento =====");
+            return;
+        }
+
+        entrega.setStatus(StatusEntrega.EM_ANDAMENTO);
+        System.out.println("Status: " + entrega.getStatus());
+        System.out.println("===== Entrega iniciada!!! =====");
+    }
+
+    public void concluirEntrega(Scanner input) {
+        Entrega entrega = buscarEntrega(input);
+        if (entrega == null) {
+            return;
+        }
+
+        if (entrega.getStatus() != StatusEntrega.EM_ANDAMENTO) {
+            System.out.println("===== Só é possível concluir entrega em andamento =====");
+            return;
+        }
+
+        entrega.setStatus(StatusEntrega.ENTREGUE);
+        System.out.println("Status: " + entrega.getStatus());
+        System.out.println("===== Entrega concluída!!! =====");
     }
 
     public void cancelarEntrega(Scanner input) {
+        Entrega entrega = buscarEntrega(input);
+        if (entrega == null) {
+            return;
+        }
 
-        System.out.println("ID da entrega:");
-        int id = input.nextInt();
+        if (entrega.getStatus() == StatusEntrega.ENTREGUE) {
+            System.out.println("===== Não é possível cancelar uma entrega já concluída =====");
+            return;
+        }
+
+        if (entrega.getStatus() == StatusEntrega.CANCELADA) {
+            System.out.println("===== Entrega já está cancelada =====");
+            return;
+        }
+
+        entrega.setStatus(StatusEntrega.CANCELADA);
+        System.out.println("Status: " + entrega.getStatus());
+        System.out.println("===== Entrega cancelada!!! =====");
+    }
+
+    private Entrega buscarEntrega(Scanner input) {
+        System.out.println("Identificador da entrega:");
+        int identificador = input.nextInt();
+        input.nextLine();
 
         for (Entrega entrega : entregas) {
-            if (entrega.getId() == id) {
-                entrega.setStatus("Cancelada");
-                System.out.println("Status" + entrega.status());
-                System.out.println("===== Entrega cancelada!!! =====");
-                return;
+            if (entrega.getIdentificador() == identificador) {
+                return entrega;
             }
         }
 
-        System.out.println("===== Entrega não encontrada!!! =====.");
+        System.out.println("===== Entrega não encontrada!!! =====");
+        return null;
     }
 }
-
-
-
-
-
-

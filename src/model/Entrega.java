@@ -1,65 +1,50 @@
 package model;
 
-import controller.Valores;
+import java.util.List;
 
 public class Entrega {
-    private int id;
+    private int identificador;
     private Clientes clientes;
-    private Produto produto;
+    private List<ItemEntrega> itens;
     private double valorEntrega;
-    private String status;
+    private StatusEntrega status;
 
-    public Entrega(int id, Clientes clientes, Produto produto, double valorEntrega, String status) {
-        this.id = id;
+    public Entrega(int identificador, Clientes clientes, List<ItemEntrega> itens, double valorEntrega, StatusEntrega status) {
+        this.identificador = identificador;
         this.clientes = clientes;
-        this.produto = produto;
+        this.itens = itens;
         this.valorEntrega = valorEntrega;
         this.status = status;
     }
 
-    public double valorTotal (Valores valores) {
-       return valores.calcularValorTotal(produto, this );
-    }
+   // public StatusEntrega status () {
+   //     return status;
+  //  }
 
-    public String status () {
-        return status;
-    }
-
-    public int getId() {
-        return id;
+    public int getIdentificador() {
+        return identificador;
     }
 
     public Clientes getCliente() {
         return clientes;
     }
 
-    public Produto getProduto() {
-        return produto;
-    }
-
-    public void setProduto(Produto produto) {
-        this.produto = produto;
+    public List<ItemEntrega> getItens() {
+        return itens;
     }
 
     public double getValorEntrega() {
         return valorEntrega;
     }
 
-    public void setValorEntrega(double valorEntrega) {
-        this.valorEntrega = valorEntrega;
+    public StatusEntrega getStatus() {
+        return status ;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
+    public void setStatus(StatusEntrega status) {
         this.status = status;
     }
 
-
-
-
-    }
+}
 
 

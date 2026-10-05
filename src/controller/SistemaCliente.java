@@ -64,13 +64,10 @@ public class SistemaCliente {
         List<String> erros = validadorCliente.validar(clientes);
         List<String> errosEndereco = validadorEndereco.validar(endereco);
 
-
-        if (!erros.isEmpty()) {
+        if (!erros.isEmpty() || !errosEndereco.isEmpty()) {
             for (String erro : erros) {
                 System.out.println(erro);
             }
-
-        }  if (!errosEndereco.isEmpty()) {
             for (String erro : errosEndereco) {
                 System.out.println(erro);
             }

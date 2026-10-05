@@ -1,19 +1,25 @@
 package model;
 
 public class ItemEntrega {
-    private int id;
     private Produto produto;
     private int quantidade;
     private double valorUnitario;
 
-    public ItemEntrega(int id, Produto produto, int quantidade, double valorUnitario) {
-        this.id = id;
+    public ItemEntrega( Produto produto, int quantidade ) {
         this.produto = produto;
         this.quantidade = quantidade;
-        this.valorUnitario = valorUnitario;
+        this.valorUnitario = produto.getValor();
     }
 
+    public Produto getProduto () {
+      return produto;
+    }
 
+    public int getQuantidade () {
+        return quantidade;
+    }
 
-
+    public double getValorUnitario () {
+        return valorUnitario;
+    }
 }

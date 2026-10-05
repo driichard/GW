@@ -29,11 +29,7 @@ public class Clientes {
         return endereco;
     }
 
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
-    }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
+
+
 }

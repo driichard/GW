@@ -11,37 +11,29 @@ public class SistemaProduto {
     private List<Produto> produtos = new ArrayList<>();
 
     public void cadastrarProduto(Scanner input) {
-        System.out.println("nome do produto:");
-        String nomeDoProduto = input.next();
+        System.out.println("Nome do produto/valume:");
+        String nomeDoProduto = input.nextLine();
 
-        System.out.println("ID produto:");
-        int id = input.nextInt();
+        System.out.println("Identificador do volume:");
+        int identificador = input.nextInt();
 
-        System.out.println("Valor:");
+        System.out.println("Valor declarado (quanto vale a mercadoria do volume):");
         double valor = input.nextDouble();
+        input.nextLine();
 
-        System.out.println("Quantidade:");
-        int quantidade = input.nextInt();
-
-        Produto produto = new Produto(id,
-                nomeDoProduto,
-                valor,
-                quantidade);
+        Produto produto = new Produto(identificador, nomeDoProduto, valor);
 
         ValidadorProduto validadorProduto = new ValidadorProduto();
         List<String> errosProduto = validadorProduto.validar(produto);
 
-        if(!errosProduto.isEmpty()) {
+        if (!errosProduto.isEmpty()) {
             for (String erro : errosProduto) {
                 System.out.println(erro);
             }
-            System.out.println("===== Cadastrar o produto novamente =====");
-
+            System.out.println("===== Cadastre o volume novamente =====");
         } else {
             produtos.add(produto);
-
-            System.out.printf("Valor da compra: %.2f R$%n", valor * quantidade);
-            System.out.println("===== Produto cadastrado com sucesso!!! =====");
+            System.out.println("===== Volume cadastrado com sucesso!!! =====");
         }
     }
 
