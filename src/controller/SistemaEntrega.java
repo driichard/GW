@@ -1,6 +1,10 @@
 package controller;
 
-import model.*;
+import model.Clientes;
+import model.Entrega;
+import model.ItemEntrega;
+import model.Produto;
+import model.StatusEntrega;
 import validation.ValidadorEntrega;
 
 import java.util.ArrayList;
@@ -11,8 +15,8 @@ public class SistemaEntrega {
     private List<Entrega> entregas = new ArrayList<>();
 
     public void cadastrarEntrega(Scanner input, SistemaCliente clientes, SistemaProduto sistemasProduto) {
-        System.out.println("código da entrega");
-        int codigoDaEntrega = input.nextInt();
+        System.out.println("Código da entrega:");
+        int codigo = input.nextInt();
         input.nextLine();
 
         System.out.println("CPF ou CNPJ do Cliente");
@@ -20,49 +24,67 @@ public class SistemaEntrega {
 
         Clientes clienteEncontrado = null;
 
-        for (Clientes c : clientes.getClientes()){
+        for (Clientes c : clientes.getClientes()) {
             if (c.getDocumento().equals(documento)) {
                 clienteEncontrado = c;
                 break;
             }
         }
 
-        if  (clienteEncontrado == null) {
+        if (clienteEncontrado == null) {
             System.out.println("Cliente não encontrado");
             return;
         }
 
-        System.out.println("código do volume");
-        int codigoDoProduto = input.nextInt();
-
-        Produto produtoEncontrado = null;
-
-        for (Produto p : sistemasProduto.getProdutos()){
-            if (p.getCodigo() == codigoDoProduto){
-                produtoEncontrado = p;
-                break;
-            }
-        }
-
-        if (produtoEncontrado == null){
-            System.out.println("Volume não encontrado");
-            return;
-        }
-
-        System.out.println("Quantidade de volumes");
-        int quantidadeItem = input.nextInt();
-        input.nextLine();
-
-        ItemEntrega item = new ItemEntrega(produtoEncontrado, quantidadeItem);
-
         List<ItemEntrega> itens = new ArrayList<>();
-        itens.add(item);
+        String continuar = "s";
 
-        double valorEntrega = Frete.calculular(itens);
+        while (continuar.equals("s")) {
+            System.out.println("Código do volume:");
+            int codigoProduto = input.nextInt();
+            input.nextLine();
 
-        Entrega entrega = new Entrega(codigoDaEntrega, clienteEncontrado, itens , valorEntrega, StatusEntrega.PENDENTE);
+            Produto produtoEncontrado = null;
 
-        ValidadorEntrega validadorEntrega = new ValidadorEntrega ();
+            for (Produto p : sistemasProduto.getProdutos()) {
+                if (p.getCodigo() == codigoProduto) {
+                    produtoEncontrado = p;
+                    break;
+                }
+            }
+
+            if (produtoEncontrado == null) {
+                System.out.println("Volume não encontrado");
+            } else {
+                boolean jaExiste = false;
+
+                for (ItemEntrega itemNaLista : itens) {
+                    if (itemNaLista.getProduto().getCodigo() == codigoProduto) {
+                        jaExiste = true;
+                        break;
+                    }
+                }
+
+                if (jaExiste) {
+                    System.out.println("Esse volume já está na entrega");
+                } else {
+                    System.out.println("Quantidade de volumes");
+                    int quantidadeItem = input.nextInt();
+                    input.nextLine();
+
+                    ItemEntrega item = new ItemEntrega(produtoEncontrado, quantidadeItem);
+                    itens.add(item);
+                }
+            }
+
+            System.out.println("Adicionar outro tipo de volume? (s/n)");
+            continuar = input.nextLine();
+        }
+
+        double valorEntrega = Frete.calcular(itens);
+
+        Entrega entrega = new Entrega(codigo, clienteEncontrado, itens, valorEntrega, StatusEntrega.PENDENTE);
+        ValidadorEntrega validadorEntrega = new ValidadorEntrega();
 
         List<String> errosEntrega = validadorEntrega.validar(entrega);
 
@@ -73,7 +95,17 @@ public class SistemaEntrega {
             System.out.println("===== Faça o cadastro novamente!!! =====");
         } else {
             entregas.add(entrega);
-            System.out.println("Valor declarado: " + produtoEncontrado.getValor() + " R$ por volume");
+
+            for (ItemEntrega item : itens) {
+                System.out.println(
+                        "Valor declarado: "
+                                + item.getValorUnitario()
+                                + " R$ por volume ("
+                                + item.getProduto().getNomeDoProduto()
+                                + ")"
+                );
+            }
+
             System.out.println("Frete a pagar: " + entrega.getValorEntrega() + " R$");
             System.out.println("Status: " + entrega.getStatus());
             System.out.println("===== Entrega cadastrada!!! =====");
@@ -91,18 +123,33 @@ public class SistemaEntrega {
         }
 
         System.out.println("===== Entregas =====");
-
         for (Entrega entrega : entregas) {
             System.out.println(
-                    "Identificador: " + entrega.getCodigo()
+                    "Código: " + entrega.getCodigo()
                             + " | Cliente: " + entrega.getCliente().getNome()
                             + " (" + entrega.getCliente().getDocumento() + ")"
                             + " | Destino: " + entrega.getCliente().getEndereco().getCidade()
                             + "/" + entrega.getCliente().getEndereco().getEstado()
                             + " | Status: " + entrega.getStatus()
-                            + " | Frete: " + entrega.getValorEntrega() + " R$"
+                            + " | Frete: R$ " + entrega.getValorEntrega()
             );
         }
+    }
+
+    public void simuladorFrete (Scanner input) {
+        System.out.println("Quantidade de volume ?");
+        int quantidade = input.nextInt();
+        input.nextLine();
+
+        if (quantidade <= 0) {
+            System.out.println("Quantidade inválida");
+            return;
+        }
+
+        double frete = Frete.calcular(quantidade);
+
+
+
     }
 
     public void iniciarEntrega(Scanner input) {
@@ -157,7 +204,6 @@ public class SistemaEntrega {
             System.out.println("===== Não é possível cancelar uma entrega já concluída =====");
             return;
         }
-
         if (entrega.getStatus() == StatusEntrega.CANCELADA) {
             System.out.println("===== Entrega já está cancelada =====");
             return;
@@ -169,12 +215,12 @@ public class SistemaEntrega {
     }
 
     private Entrega buscarEntrega(Scanner input) {
-        System.out.println("codigo da entrega:");
-        int codigoDaEntrega = input.nextInt();
+        System.out.println("Código da entrega:");
+        int codigo = input.nextInt();
         input.nextLine();
 
         for (Entrega entrega : entregas) {
-            if (entrega.getCodigo() == codigoDaEntrega) {
+            if (entrega.getCodigo() == codigo) {
                 return entrega;
             }
         }
