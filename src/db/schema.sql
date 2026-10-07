@@ -33,8 +33,8 @@ CREATE TABLE entrega (
 );
 CREATE TABLE item_entrega (
                               id             SERIAL PRIMARY KEY,
-                              entrega_id     INTEGER        NOT NULL UNIQUE,
-                              produto_id     INTEGER        NOT NULL UNIQUE,
+                              entrega_id     INTEGER        NOT NULL,
+                              produto_id     INTEGER        NOT NULL,
                               quantidade     INTEGER        NOT NULL,
                               valor_unitario NUMERIC(10, 2) NOT NULL,
 

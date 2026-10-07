@@ -1,10 +1,10 @@
-package controller;
+package main.java.controller;
 
-import model.Clientes;
-import model.Entrega;
-import model.ItemEntrega;
-import model.Produto;
-import model.StatusEntrega;
+import main.java.model.Clientes;
+import main.java.model.Entrega;
+import main.java.model.ItemEntrega;
+import main.java.model.Produto;
+import main.java.model.StatusEntrega;
 import validation.ValidadorEntrega;
 
 import java.util.ArrayList;

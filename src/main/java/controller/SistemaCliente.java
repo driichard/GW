@@ -1,7 +1,7 @@
-package controller;
+package main.java.controller;
 
-import model.Clientes;
-import model.Endereco;
+import main.java.model.Clientes;
+import main.java.model.Endereco;
 //import validation.ErrosValidacoes;
 import validation.ValidadorCliente;
 import validation.ValidadorEndereco;

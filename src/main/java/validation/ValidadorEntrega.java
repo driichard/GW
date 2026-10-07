@@ -1,12 +1,12 @@
-package validation;
+package main.java.validation;
 
-import model.Entrega;
-import model.ItemEntrega;
+import main.java.model.Entrega;
+import main.java.model.ItemEntrega;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ValidadorEntrega implements Validador<Entrega> {
+public class ValidadorEntrega implements validation.Validador<Entrega> {
 
     @Override
     public List<String> validar(Entrega entrega) {

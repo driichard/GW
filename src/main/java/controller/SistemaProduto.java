@@ -1,6 +1,6 @@
-package controller;
+package main.java.controller;
 
-import model.Produto;
+import main.java.model.Produto;
 import validation.ValidadorProduto;
 
 import java.util.ArrayList;

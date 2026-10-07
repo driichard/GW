@@ -1,11 +1,11 @@
-package validation;
+package main.java.validation;
 
-import model.Clientes;
+import main.java.model.Clientes;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ValidadorCliente implements Validador<Clientes> {
+public class ValidadorCliente implements validation.Validador<Clientes> {
 
     @Override
     public List<String> validar(Clientes cliente) {

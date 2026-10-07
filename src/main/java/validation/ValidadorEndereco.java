@@ -1,11 +1,10 @@
-package validation;
-
-import model.Endereco;
+package main.java.validation;
+import main.java.model.Endereco;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ValidadorEndereco implements Validador<Endereco> {
+public class ValidadorEndereco implements validation.Validador<Endereco> {
 
 
     @Override

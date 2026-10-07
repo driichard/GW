@@ -1,7 +1,7 @@
-package controller;
+package main.java.controller;
 
 
-import model.ItemEntrega;
+import main.java.model.ItemEntrega;
 
 import java.util.List;
 

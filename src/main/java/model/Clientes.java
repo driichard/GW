@@ -1,4 +1,4 @@
-package model;
+package main.java.model;
 
 public class Clientes {
     private String documento;
