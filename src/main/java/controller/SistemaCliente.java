@@ -1,7 +1,7 @@
-package main.java.controller;
+package controller;
 
-import main.java.model.Clientes;
-import main.java.model.Endereco;
+import model.Clientes;
+import model.Endereco;
 //import validation.ErrosValidacoes;
 import validation.ValidadorCliente;
 import validation.ValidadorEndereco;
@@ -21,10 +21,10 @@ public class SistemaCliente {
         System.out.println("Telefone (Digite com ddd): ");
         String telefone = input.nextLine();
 
-        System.out.println("CPF ou CNPJ (Apenas número):");
+        System.out.println("CPF ou CNPJ (Apenas números):");
         String documento = input.nextLine();
 
-        System.out.println("CEP (Apenas número):");
+        System.out.println("CEP (Apenas números:");
         String cep = input.nextLine();
 
         System.out.println("Rua:");

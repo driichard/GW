@@ -1,4 +1,4 @@
-puglins {
+plugins {
     id 'java'
     id 'war'
 }

@@ -1,11 +1,11 @@
-package main.java.model;
+package model;
 
 public class ItemEntrega {
     private Produto produto;
     private int quantidade;
     private double valorUnitario;
 
-    public ItemEntrega( Produto produto, int quantidade ) {
+    public ItemEntrega(Produto produto, int quantidade ) {
         this.produto = produto;
         this.quantidade = quantidade;
         this.valorUnitario = produto.getValor();

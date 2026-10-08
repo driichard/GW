@@ -1,5 +1,5 @@
-package main.java.validation;
-import main.java.model.Endereco;
+package validation;
+import model.Endereco;
 
 import java.util.ArrayList;
 import java.util.List;

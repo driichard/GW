@@ -1,10 +1,10 @@
-package main.java.controller;
+package controller;
 
-import main.java.model.Clientes;
-import main.java.model.Entrega;
-import main.java.model.ItemEntrega;
-import main.java.model.Produto;
-import main.java.model.StatusEntrega;
+import model.Clientes;
+import model.Entrega;
+import model.ItemEntrega;
+import model.Produto;
+import model.StatusEntrega;
 import validation.ValidadorEntrega;
 
 import java.util.ArrayList;
@@ -41,6 +41,7 @@ public class SistemaEntrega {
 
         while (continuar.equals("s")) {
             System.out.println("Código do volume:");
+
             int codigoProduto = input.nextInt();
             input.nextLine();
 

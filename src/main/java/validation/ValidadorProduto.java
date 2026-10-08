@@ -1,6 +1,6 @@
-package main.java.validation;
+package validation;
 
-import main.java.model.Produto;
+import model.Produto;
 
 import java.util.ArrayList;
 import java.util.List;

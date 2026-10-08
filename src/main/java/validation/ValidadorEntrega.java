@@ -1,7 +1,8 @@
-package main.java.validation;
+package validation;
 
-import main.java.model.Entrega;
-import main.java.model.ItemEntrega;
+import model.Entrega;
+import model.ItemEntrega;
+
 
 import java.util.ArrayList;
 import java.util.List;
