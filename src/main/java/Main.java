@@ -1,6 +1,6 @@
-import main.java.controller.SistemaCliente;
-import main.java.controller.SistemaEntrega;
-import main.java.controller.SistemaProduto;
+import controller.SistemaCliente;
+import controller.SistemaEntrega;
+import controller.SistemaProduto;
 
 import java.util.Scanner;
 

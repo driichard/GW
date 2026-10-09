@@ -1,16 +1,25 @@
 package controller;
 
+import db.ConnectionFactory;
 import model.Clientes;
 import model.Endereco;
 //import validation.ErrosValidacoes;
 import validation.ValidadorCliente;
 import validation.ValidadorEndereco;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class SistemaCliente {
+
+    //private ConnectionFactory connection;
+
+  //  public SistemaCliente () {
+   //     this.connection = new ConnectionFactory();
+  //  }
+
     private List<Clientes> clientes = new ArrayList<>();
 
     public void cadastrarCliente(Scanner input) {
