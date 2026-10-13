@@ -1,14 +1,14 @@
 package validation;
 
-import model.Clientes;
+import model.Cliente;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ValidadorCliente implements validation.Validador<Clientes> {
+public class ValidadorCliente implements validation.Validador<Cliente> {
 
     @Override
-    public List<String> validar(Clientes cliente) {
+    public List<String> validar(Cliente cliente) {
         List<String> erros = new ArrayList<>();
 
         if (cliente.getNome() == null || cliente.getNome().isBlank()) {

@@ -8,19 +8,26 @@ import java.util.List;
 public class Frete {
     public static final double TAXA_BASE = 15.0;
     public static final double TAXA_POR_VOLUME = 0.8;
+    public static final double TAXA_POR_PESO = 1.2;
 
-    public static double calcular (int quantidade) {
-        return TAXA_BASE + TAXA_POR_VOLUME * quantidade;
+    public static double calcularVolume(double comprimento, double altura, double largura) {
+        return (comprimento * altura * largura) / 1_000_000.0;
+    }
+
+    public static double calcular (double volume, double peso) {
+        return TAXA_BASE + TAXA_POR_VOLUME * volume + TAXA_POR_PESO * peso;
     }
 
     public static double calcular (List<ItemEntrega>itens) {
-        int quantidade = 0;
+        double volume = 0;
+        double peso = 0;
         if(itens != null) {
             for (ItemEntrega item : itens) {
-                quantidade += item.getQuantidade();
+                volume += item.getProduto().getVolume() * item.getQuantidade();
+                peso += item.getProduto().getPeso() * item.getQuantidade();
             }
         }
-        return calcular(quantidade);
+        return calcular(volume, peso);
     }
 
 

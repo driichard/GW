@@ -1,7 +1,9 @@
+import controller.SimuladorFrete;
 import controller.SistemaCliente;
 import controller.SistemaEntrega;
 import controller.SistemaProduto;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -12,23 +14,31 @@ public class Main {
         SistemaCliente sistemaCliente = new SistemaCliente();
         SistemaProduto sistemaProduto = new SistemaProduto();
         SistemaEntrega sistemaEntrega = new SistemaEntrega();
+        SimuladorFrete simuladorFrete = new SimuladorFrete();
 
         int escolha = 1;
 
         while (escolha != 0) {
 
-            System.out.println("1 - Cadastrar Cliente");
-            System.out.println("2 - Cadastrar produto/volume");
+            System.out.println("1 - Cadastrar remetente/destinatário");
+            System.out.println("2 - Cadastrar produto");
             System.out.println("3 - Cadastrar Entrega");
             System.out.println("4 - Iniciar Entrega");
             System.out.println("5 - Concluir Entrega");
             System.out.println("6 - Cancelar Entrega");
             System.out.println("7 - Listar Entregas");
+            System.out.println("8 - Simular frete");
             System.out.println("0 - Para sair");
 
             System.out.println("Escolha uma opção");
-            escolha = input.nextInt();
-            input.nextLine();
+            try {
+                escolha = input.nextInt();
+                input.nextLine();
+            } catch (InputMismatchException e) {
+                System.out.println("Opção inválida");
+                input.nextLine();
+                continue;
+            }
 
             if (escolha == 1) {
 
@@ -57,6 +67,10 @@ public class Main {
             } else if (escolha == 7) {
 
                 sistemaEntrega.listarEntregas();
+
+            } else if (escolha == 8) {
+
+                simuladorFrete.simular(input);
 
             } else if (escolha == 0) {
 

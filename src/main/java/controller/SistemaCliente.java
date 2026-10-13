@@ -1,30 +1,22 @@
 package controller;
 
+import dao.ClienteDAO;
 import db.ConnectionFactory;
-import model.Clientes;
+import model.Cliente;
 import model.Endereco;
-//import validation.ErrosValidacoes;
 import validation.ValidadorCliente;
 import validation.ValidadorEndereco;
 
 import java.sql.Connection;
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
 public class SistemaCliente {
 
-    //private ConnectionFactory connection;
-
-  //  public SistemaCliente () {
-   //     this.connection = new ConnectionFactory();
-  //  }
-
-    private List<Clientes> clientes = new ArrayList<>();
-
     public void cadastrarCliente(Scanner input) {
 
-        System.out.println("Nome:");
+        System.out.println("Nome do remetente ou destinatário:");
         String nome = input.nextLine();
 
         System.out.println("Telefone (Digite com ddd): ");
@@ -60,7 +52,7 @@ public class SistemaCliente {
                 estado
         );
 
-        Clientes clientes = new Clientes(
+        Cliente cliente = new Cliente(
                 telefone,
                 documento,
                 nome,
@@ -70,7 +62,7 @@ public class SistemaCliente {
         ValidadorCliente validadorCliente = new ValidadorCliente();
         ValidadorEndereco validadorEndereco = new ValidadorEndereco();
 
-        List<String> erros = validadorCliente.validar(clientes);
+        List<String> erros = validadorCliente.validar(cliente);
         List<String> errosEndereco = validadorEndereco.validar(endereco);
 
         if (!erros.isEmpty() || !errosEndereco.isEmpty()) {
@@ -82,13 +74,37 @@ public class SistemaCliente {
             }
             System.out.println("=======Faça o cadastro novamente=======");
         } else {
-            this.clientes.add(clientes);
-            System.out.println("===== Cliente cadastrado com sucesso!!! =====");
+            try (Connection connection = new ConnectionFactory().recuperarConexao()) {
+                new ClienteDAO(connection).salvar(cliente);
+                System.out.println("===== Cliente cadastrado com sucesso!!! =====");
+            } catch (SQLException | RuntimeException e) {
+                System.out.println("Erro ao gravar cliente: " + mensagemBanco(e));
+            }
         }
     }
 
-    public List<Clientes> getClientes() {
-        return clientes;
+    public List<Cliente> getClientes() {
+        try (Connection connection = new ConnectionFactory().recuperarConexao()) {
+            return new ClienteDAO(connection).listarTodas();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Cliente buscarPorDocumento(String documento) {
+        try (Connection connection = new ConnectionFactory().recuperarConexao()) {
+            return new ClienteDAO(connection).buscarPorDocumento(documento);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String mensagemBanco(Exception e) {
+        Throwable causa = e.getCause();
+        if (causa != null && causa.getMessage() != null && causa.getMessage().contains("duplicate")) {
+            return "já existe um cliente com esse CPF/CNPJ";
+        }
+        return e.getMessage();
     }
 }
 

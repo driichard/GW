@@ -21,12 +21,16 @@ public class ValidadorEntrega implements validation.Validador<Entrega> {
             errosEntrega.add("Valor do frete inválido");
         }
 
-        if (entrega.getCliente() == null) {
-            errosEntrega.add("Informações clientes inválido");
+        if (entrega.getRemetente() == null) {
+            errosEntrega.add("Remetente inválido");
+        }
+
+        if (entrega.getDestinatario() == null) {
+            errosEntrega.add("Destinatário inválido");
         }
 
         if (entrega.getItens() == null || entrega.getItens().isEmpty()) {
-            errosEntrega.add("Entrega sem volumes");
+            errosEntrega.add("Entrega sem produtos");
         } else {
             for (ItemEntrega item : entrega.getItens()) {
                 if (item.getQuantidade() <= 0) {
@@ -34,7 +38,7 @@ public class ValidadorEntrega implements validation.Validador<Entrega> {
                 }
 
                 if (item.getProduto() == null) {
-                    errosEntrega.add("Volume do item inválido");
+                    errosEntrega.add("Produto do item inválido");
                 }
             }
         }

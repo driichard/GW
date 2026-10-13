@@ -14,7 +14,7 @@ public class ValidadorEndereco implements validation.Validador<Endereco> {
 
         if (endereco.getCep() == null
                 || endereco.getCep().isBlank()
-                || !endereco.getCep().matches("\\d+")) {
+                || !endereco.getCep().matches("\\d{8}")) {
             errosEndereco.add("Cep inválido!");
         }
 
@@ -34,7 +34,7 @@ public class ValidadorEndereco implements validation.Validador<Endereco> {
 
         if (endereco.getEstado() == null
                 || endereco.getEstado().isBlank()
-                || endereco.getEstado().matches("\\d+")) {
+                || !endereco.getEstado().matches("[A-Za-z]{2}")) {
             errosEndereco.add("Estado inválido!");
         }
 
