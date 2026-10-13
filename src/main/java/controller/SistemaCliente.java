@@ -25,7 +25,7 @@ public class SistemaCliente {
         System.out.println("CPF ou CNPJ (Apenas números):");
         String documento = input.nextLine();
 
-        System.out.println("CEP (Apenas números:");
+        System.out.println("CEP (Apenas números):");
         String cep = input.nextLine();
 
         System.out.println("Rua:");

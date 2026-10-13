@@ -18,8 +18,3 @@ public class ConnectionFactory {
         }
      }
   }
-
-
-//public static void conexao (String... x) {
-
-//}

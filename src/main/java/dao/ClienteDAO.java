@@ -28,7 +28,9 @@ public class ClienteDAO {
             preparedStatement.setString(2, cliente.getTelefone());
             preparedStatement.setString(3, cliente.getNome());
             preparedStatement.setInt(4, enderecoId);
+
             preparedStatement.execute();
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -42,10 +44,12 @@ public class ClienteDAO {
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql);
              ResultSet rs = preparedStatement.executeQuery()) {
+
             while (rs.next()) {
                 clientes.add(montarCliente(rs));
             }
             return clientes;
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
