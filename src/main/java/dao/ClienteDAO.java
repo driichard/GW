@@ -18,21 +18,34 @@ public class ClienteDAO {
     }
 
     public void salvar(Cliente cliente) {
-        EnderecoDAO enderecoDAO = new EnderecoDAO(connection);
-        int enderecoId = enderecoDAO.salvar(cliente.getEndereco());
-
         String sql = "INSERT INTO cliente (documento, telefone, nome, endereco_id) VALUES (?, ?, ?, ?)";
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, cliente.getDocumento());
-            preparedStatement.setString(2, cliente.getTelefone());
-            preparedStatement.setString(3, cliente.getNome());
-            preparedStatement.setInt(4, enderecoId);
+        try {
+            connection.setAutoCommit(false);
+            int enderecoId = new EnderecoDAO(connection).salvar(cliente.getEndereco());
 
-            preparedStatement.execute();
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, cliente.getDocumento());
+                preparedStatement.setString(2, cliente.getTelefone());
+                preparedStatement.setString(3, cliente.getNome());
+                preparedStatement.setInt(4, enderecoId);
+                preparedStatement.execute();
+            }
 
-        } catch (SQLException e) {
+            connection.commit();
+        } catch (SQLException | RuntimeException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException rollbackErro) {
+                throw new RuntimeException(rollbackErro);
+            }
             throw new RuntimeException(e);
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -77,23 +90,47 @@ public class ClienteDAO {
 
     public void atualizar(Cliente cliente) {
         String sql = "UPDATE cliente SET telefone = ?, nome = ? WHERE documento = ?";
+        int enderecoId = buscarEnderecoIdPorDocumento(cliente.getDocumento());
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, cliente.getTelefone());
             preparedStatement.setString(2, cliente.getNome());
             preparedStatement.setString(3, cliente.getDocumento());
             preparedStatement.executeUpdate();
+            new EnderecoDAO(connection).atualizar(enderecoId, cliente.getEndereco());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     public void deletar(String documento) {
-        String sql = "DELETE FROM cliente WHERE documento = ?";
+        int enderecoId = buscarEnderecoIdPorDocumento(documento);
+        String sqlCliente = "DELETE FROM cliente WHERE documento = ?";
+        String sqlEndereco = "DELETE FROM endereco WHERE id = ?";
+
+        try (PreparedStatement deleteCliente = connection.prepareStatement(sqlCliente);
+             PreparedStatement deleteEndereco = connection.prepareStatement(sqlEndereco)) {
+            deleteCliente.setString(1, documento);
+            deleteCliente.executeUpdate();
+            deleteEndereco.setInt(1, enderecoId);
+            deleteEndereco.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    int buscarEnderecoIdPorDocumento(String documento) {
+        String sql = "SELECT endereco_id FROM cliente WHERE documento = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, documento);
-            preparedStatement.executeUpdate();
+
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("endereco_id");
+                }
+            }
+            throw new RuntimeException("Cliente não encontrado");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

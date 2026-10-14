@@ -13,10 +13,10 @@ import java.util.Scanner;
 public class SistemaProduto {
 
     public void cadastrarProduto(Scanner input) {
-        System.out.println("Nome do produto:");
+        System.out.println("Nome da caixa:");
         String nome = input.nextLine();
 
-        System.out.println("Código do produto:");
+        System.out.println("Código (você escolhe o número):");
         int codigo = input.nextInt();
 
         System.out.println("Peso (kg):");
@@ -31,7 +31,7 @@ public class SistemaProduto {
         System.out.println("Largura (cm):");
         double largura = input.nextDouble();
 
-        System.out.println("Valor declarado (quanto vale a mercadoria):");
+        System.out.println("Valor declarado (não entra no frete):");
         double valor = input.nextDouble();
         input.nextLine();
 
@@ -45,36 +45,57 @@ public class SistemaProduto {
                 System.out.println(erro);
             }
             System.out.println("===== Cadastre o produto novamente =====");
-        } else {
-            try (Connection connection = new ConnectionFactory().recuperarConexao()) {
-                new ProdutoDAO(connection).salvar(produto);
-                System.out.println("Volume: " + produto.getVolume() + " m³");
-                System.out.println("===== Produto cadastrado com sucesso!!! =====");
-            } catch (SQLException | RuntimeException e) {
-                System.out.println("Erro ao gravar produto: " + mensagemBanco(e));
-            }
+            return;
+        }
+
+        try (Connection connection = new ConnectionFactory().recuperarConexao()) {
+            new ProdutoDAO(connection).salvar(produto);
+            System.out.println("Volume (C × A × L): " + produto.getVolume() + " m³");
+            System.out.println("===== Produto cadastrado com sucesso!!! =====");
+        } catch (SQLException | RuntimeException e) {
+            System.out.println("Erro ao gravar produto: " + mensagemBanco(e));
         }
     }
 
-    public List<Produto> getProdutos() {
+    public void listarProdutos() {
         try (Connection connection = new ConnectionFactory().recuperarConexao()) {
-            return new ProdutoDAO(connection).listarTodas();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            List<Produto> produtos = new ProdutoDAO(connection).listarTodas();
+            if (produtos.isEmpty()) {
+                System.out.println("===== Nenhum produto cadastrado =====");
+                return;
+            }
+
+            System.out.println("===== Produtos =====");
+            for (Produto produto : produtos) {
+                System.out.println(
+                        "Código: " + produto.getCodigo()
+                                + " | Nome: " + produto.getNomeDoProduto()
+                                + " | Peso: " + produto.getPeso() + " kg"
+                                + " | Volume: " + produto.getVolume() + " m³"
+                                + " | Valor declarado: " + produto.getValor() + " R$"
+                );
+            }
+        } catch (SQLException | RuntimeException e) {
+            System.out.println("Erro ao listar produtos: " + mensagemBanco(e));
         }
     }
 
     public Produto buscarPorCodigo(int codigo) {
         try (Connection connection = new ConnectionFactory().recuperarConexao()) {
             return new ProdutoDAO(connection).buscarPorCodigo(codigo);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException | RuntimeException e) {
+            System.out.println("Erro ao buscar produto: " + mensagemBanco(e));
+            return null;
         }
     }
 
     private String mensagemBanco(Exception e) {
         Throwable causa = e.getCause();
-        if (causa != null && causa.getMessage() != null && causa.getMessage().contains("duplicate")) {
+        String texto = e.getMessage();
+        if (causa != null) {
+            texto = causa.getMessage();
+        }
+        if (texto != null && texto.contains("duplicate")) {
             return "já existe um produto com esse código";
         }
         return e.getMessage();

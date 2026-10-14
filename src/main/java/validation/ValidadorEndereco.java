@@ -4,7 +4,7 @@ import model.Endereco;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ValidadorEndereco implements validation.Validador<Endereco> {
+public class ValidadorEndereco implements Validador<Endereco> {
 
 
     @Override

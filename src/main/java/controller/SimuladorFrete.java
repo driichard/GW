@@ -23,7 +23,7 @@ public class SimuladorFrete {
         System.out.println("Peso (kg):");
         double pesoUnitario = input.nextDouble();
 
-        System.out.println("Quantidade:");
+        System.out.println("Quantidade de caixas:");
         int quantidade = input.nextInt();
         input.nextLine();
 
@@ -42,16 +42,7 @@ public class SimuladorFrete {
         double peso = pesoUnitario * quantidade;
         double frete = Frete.calcular(volume, peso);
 
-        errosFrete = validadorFrete.validarValor(frete);
-        if (!errosFrete.isEmpty()) {
-            for (String erro : errosFrete) {
-                System.out.println(erro);
-            }
-            System.out.println("===== Simule o frete novamente =====");
-            return;
-        }
-
-        System.out.println("Volume: " + volume + " m³");
+        System.out.println("Volume (C × A × L): " + volume + " m³");
         System.out.println("Peso: " + peso + " kg");
         System.out.println("Frete estimado: " + frete + " R$");
         System.out.println("===== Simulação concluída (nada foi gravado) =====");

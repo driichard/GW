@@ -183,7 +183,8 @@ public class EntregaDAO {
     }
 
     private List<ItemEntrega> listarItens(int codigoEntrega) throws SQLException {
-        String sql = "SELECT p.codigo, p.nome, p.valor, p.peso, p.comprimento, p.altura, p.largura, i.quantidade "
+        String sql = "SELECT p.codigo, p.nome, p.valor, p.peso, p.comprimento, p.altura, p.largura, "
+                + "i.quantidade, i.valor_unitario "
                 + "FROM item_entrega i "
                 + "JOIN produto p ON p.id = i.produto_id "
                 + "JOIN entrega e ON e.id = i.entrega_id "
@@ -204,7 +205,7 @@ public class EntregaDAO {
                             rs.getDouble("altura"),
                             rs.getDouble("largura")
                     );
-                    itens.add(new ItemEntrega(produto, rs.getInt("quantidade")));
+                    itens.add(new ItemEntrega(produto, rs.getInt("quantidade"), rs.getDouble("valor_unitario")));
                 }
             }
         }

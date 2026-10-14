@@ -5,14 +5,14 @@ import model.Produto;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ValidadorProduto implements validation.Validador<Produto> {
+public class ValidadorProduto implements Validador<Produto> {
 
     @Override
     public List<String> validar(Produto produto) {
         List<String> errosProduto = new ArrayList<>();
 
         if (produto.getCodigo() <= 0) {
-            errosProduto.add("Identificador inválido");
+            errosProduto.add("Código inválido");
         }
 
         if (produto.getValor() <= 0) {

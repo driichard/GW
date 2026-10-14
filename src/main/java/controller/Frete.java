@@ -18,16 +18,28 @@ public class Frete {
         return TAXA_BASE + TAXA_POR_VOLUME * volume + TAXA_POR_PESO * peso;
     }
 
-    public static double calcular (List<ItemEntrega>itens) {
+    public static double volumeTotal(List<ItemEntrega> itens) {
         double volume = 0;
-        double peso = 0;
-        if(itens != null) {
+        if (itens != null) {
             for (ItemEntrega item : itens) {
                 volume += item.getProduto().getVolume() * item.getQuantidade();
+            }
+        }
+        return volume;
+    }
+
+    public static double pesoTotal(List<ItemEntrega> itens) {
+        double peso = 0;
+        if (itens != null) {
+            for (ItemEntrega item : itens) {
                 peso += item.getProduto().getPeso() * item.getQuantidade();
             }
         }
-        return calcular(volume, peso);
+        return peso;
+    }
+
+    public static double calcular(List<ItemEntrega> itens) {
+        return calcular(volumeTotal(itens), pesoTotal(itens));
     }
 
 

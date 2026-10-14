@@ -65,34 +65,6 @@ public class ProdutoDAO {
         }
     }
 
-    public void atualizar(Produto produto) {
-        String sql = "UPDATE produto SET nome = ?, valor = ?, peso = ?, comprimento = ?, altura = ?, largura = ? WHERE codigo = ?";
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, produto.getNomeDoProduto());
-            preparedStatement.setDouble(2, produto.getValor());
-            preparedStatement.setDouble(3, produto.getPeso());
-            preparedStatement.setDouble(4, produto.getComprimento());
-            preparedStatement.setDouble(5, produto.getAltura());
-            preparedStatement.setDouble(6, produto.getLargura());
-            preparedStatement.setInt(7, produto.getCodigo());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void deletar(int codigo) {
-        String sql = "DELETE FROM produto WHERE codigo = ?";
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, codigo);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     int buscarIdPorCodigo(int codigo) {
         String sql = "SELECT id FROM produto WHERE codigo = ?";
 

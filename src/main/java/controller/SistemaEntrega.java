@@ -8,7 +8,6 @@ import model.ItemEntrega;
 import model.Produto;
 import model.StatusEntrega;
 import validation.ValidadorEntrega;
-import validation.ValidadorFrete;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -19,29 +18,29 @@ import java.util.Scanner;
 public class SistemaEntrega {
 
     public void cadastrarEntrega(Scanner input, SistemaCliente clientes, SistemaProduto sistemasProduto) {
-        System.out.println("Código da entrega:");
+        System.out.println("Código da entrega (você escolhe o número):");
         int codigo = input.nextInt();
         input.nextLine();
 
         System.out.println("CPF ou CNPJ do remetente:");
-        String documentoRemetente = input.nextLine();
+        String documentoRemetente = input.nextLine().trim();
         Cliente remetente = clientes.buscarPorDocumento(documentoRemetente);
 
         if (remetente == null) {
-            System.out.println("Remetente não encontrado");
+            System.out.println("Remetente não encontrado. Cadastre o cliente antes.");
             return;
         }
 
         System.out.println("CPF ou CNPJ do destinatário:");
-        String documentoDestinatario = input.nextLine();
+        String documentoDestinatario = input.nextLine().trim();
         Cliente destinatario = clientes.buscarPorDocumento(documentoDestinatario);
 
         if (destinatario == null) {
-            System.out.println("Destinatário não encontrado");
+            System.out.println("Destinatário não encontrado. Cadastre o cliente antes.");
             return;
         }
 
-        if (documentoRemetente.equals(documentoDestinatario)) {
+        if (remetente.getDocumento().equals(destinatario.getDocumento())) {
             System.out.println("Remetente e destinatário precisam ser diferentes");
             return;
         }
@@ -50,15 +49,14 @@ public class SistemaEntrega {
         String continuar = "s";
 
         while (continuar.equals("s")) {
-            System.out.println("Código do produto:");
-
+            System.out.println("Código da caixa:");
             int codigoProduto = input.nextInt();
             input.nextLine();
 
             Produto produtoEncontrado = sistemasProduto.buscarPorCodigo(codigoProduto);
 
             if (produtoEncontrado == null) {
-                System.out.println("Produto não encontrado");
+                System.out.println("Caixa não encontrada. Cadastre o produto antes.");
             } else {
                 boolean jaExiste = false;
 
@@ -70,109 +68,116 @@ public class SistemaEntrega {
                 }
 
                 if (jaExiste) {
-                    System.out.println("Esse produto já está na entrega");
+                    System.out.println("Essa caixa já está na entrega");
                 } else {
-                    System.out.println("Quantidade:");
+                    System.out.println(
+                            "Caixa: " + produtoEncontrado.getNomeDoProduto()
+                                    + " | Peso: " + produtoEncontrado.getPeso() + " kg"
+                                    + " | Volume: " + produtoEncontrado.getVolume() + " m³"
+                    );
+                    System.out.println("Quantidade de caixas:");
                     int quantidadeItem = input.nextInt();
                     input.nextLine();
 
-                    ItemEntrega item = new ItemEntrega(produtoEncontrado, quantidadeItem);
-                    itens.add(item);
+                    if (quantidadeItem <= 0) {
+                        System.out.println("Quantidade inválida");
+                    } else {
+                        ItemEntrega item = new ItemEntrega(produtoEncontrado, quantidadeItem);
+                        itens.add(item);
+                    }
                 }
             }
 
-            System.out.println("Adicionar outro produto? (s/n)");
+            System.out.println("Adicionar outra caixa? (s/n)");
             continuar = input.nextLine().trim().toLowerCase();
         }
 
-        ValidadorFrete validadorFrete = new ValidadorFrete();
-        List<String> errosFrete = validadorFrete.validar(itens);
-
-        if (!errosFrete.isEmpty()) {
-            for (String erro : errosFrete) {
-                System.out.println(erro);
-            }
+        if (itens.isEmpty()) {
+            System.out.println("Entrega sem produtos");
             System.out.println("===== Faça o cadastro novamente!!! =====");
             return;
         }
 
         double valorEntrega = Frete.calcular(itens);
-        errosFrete = validadorFrete.validarValor(valorEntrega);
 
         Entrega entrega = new Entrega(codigo, remetente, destinatario, itens, valorEntrega, StatusEntrega.PENDENTE);
         ValidadorEntrega validadorEntrega = new ValidadorEntrega();
 
         List<String> errosEntrega = validadorEntrega.validar(entrega);
-        errosEntrega.addAll(errosFrete);
 
         if (!errosEntrega.isEmpty()) {
             for (String erro : errosEntrega) {
                 System.out.println(erro);
             }
             System.out.println("===== Faça o cadastro novamente!!! =====");
-        } else {
-            try (Connection connection = new ConnectionFactory().recuperarConexao()) {
-                new EntregaDAO(connection).salvar(entrega);
-            } catch (SQLException | RuntimeException e) {
-                System.out.println("Erro ao gravar entrega: " + mensagemBanco(e));
-                return;
-            }
+            return;
+        }
 
+        try (Connection connection = new ConnectionFactory().recuperarConexao()) {
+            new EntregaDAO(connection).salvar(entrega);
             System.out.println("Origem: " + enderecoTexto(remetente));
             System.out.println("Destino: " + enderecoTexto(destinatario));
 
             for (ItemEntrega item : itens) {
-                System.out.println(
-                        item.getProduto().getNomeDoProduto()
-                                + " | Peso: " + item.getProduto().getPeso() + " kg"
-                                + " | Volume: " + item.getProduto().getVolume() + " m³"
-                                + " | Valor declarado: " + item.getValorUnitario() + " R$"
-                );
+                System.out.println(textoCaixa(item));
             }
 
-            double volumeTotal = 0;
-            double pesoTotal = 0;
-            for (ItemEntrega item : itens) {
-                volumeTotal += item.getProduto().getVolume() * item.getQuantidade();
-                pesoTotal += item.getProduto().getPeso() * item.getQuantidade();
-            }
-
-            System.out.println("Volume total: " + volumeTotal + " m³");
-            System.out.println("Peso total: " + pesoTotal + " kg");
+            System.out.println("Volume total: " + Frete.volumeTotal(itens) + " m³");
+            System.out.println("Peso total: " + Frete.pesoTotal(itens) + " kg");
             System.out.println("Frete a pagar: " + entrega.getValorEntrega() + " R$");
             System.out.println("Status: " + entrega.getStatus());
             System.out.println("===== Entrega cadastrada!!! =====");
-        }
-    }
-
-    public List<Entrega> getEntregas() {
-        try (Connection connection = new ConnectionFactory().recuperarConexao()) {
-            return new EntregaDAO(connection).listarTodas();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException | RuntimeException e) {
+            System.out.println("Erro ao gravar entrega: " + mensagemBanco(e));
         }
     }
 
     public void listarEntregas() {
-        List<Entrega> entregas = getEntregas();
-        if (entregas.isEmpty()) {
-            System.out.println("===== Nenhuma entrega cadastrada =====");
+        try (Connection connection = new ConnectionFactory().recuperarConexao()) {
+            List<Entrega> entregas = new EntregaDAO(connection).listarTodas();
+            if (entregas.isEmpty()) {
+                System.out.println("===== Nenhuma entrega cadastrada =====");
+                return;
+            }
+
+            System.out.println("===== Entregas =====");
+            for (Entrega entrega : entregas) {
+                System.out.println(
+                        "Código: " + entrega.getCodigo()
+                                + " | Remetente: " + entrega.getRemetente().getNome()
+                                + " | Destinatário: " + entrega.getDestinatario().getNome()
+                                + " | Origem: " + entrega.getRemetente().getEndereco().getCidade()
+                                + "/" + entrega.getRemetente().getEndereco().getEstado()
+                                + " → Destino: " + entrega.getDestinatario().getEndereco().getCidade()
+                                + "/" + entrega.getDestinatario().getEndereco().getEstado()
+                                + " | Status: " + entrega.getStatus()
+                                + " | Frete: R$ " + entrega.getValorEntrega()
+                );
+                for (ItemEntrega item : entrega.getItens()) {
+                    System.out.println("  " + textoCaixa(item));
+                }
+            }
+        } catch (SQLException | RuntimeException e) {
+            System.out.println("Erro ao listar entregas: " + mensagemBanco(e));
+        }
+    }
+
+    public void excluirEntrega(Scanner input) {
+        Entrega entrega = buscarEntrega(input);
+        if (entrega == null) {
             return;
         }
 
-        System.out.println("===== Entregas =====");
-        for (Entrega entrega : entregas) {
-            System.out.println(
-                    "Código: " + entrega.getCodigo()
-                            + " | Remetente: " + entrega.getRemetente().getNome()
-                            + " | Destinatário: " + entrega.getDestinatario().getNome()
-                            + " | Origem: " + entrega.getRemetente().getEndereco().getCidade()
-                            + "/" + entrega.getRemetente().getEndereco().getEstado()
-                            + " → Destino: " + entrega.getDestinatario().getEndereco().getCidade()
-                            + "/" + entrega.getDestinatario().getEndereco().getEstado()
-                            + " | Status: " + entrega.getStatus()
-                            + " | Frete: R$ " + entrega.getValorEntrega()
-            );
+        if (entrega.getStatus() == StatusEntrega.ENTREGUE) {
+            System.out.println("===== Não é possível excluir uma entrega já concluída =====");
+            return;
+        }
+
+        try (Connection connection = new ConnectionFactory().recuperarConexao()) {
+            new EntregaDAO(connection).deletar(entrega.getCodigo());
+            System.out.println("===== Entrega excluída!!! =====");
+        } catch (SQLException | RuntimeException e) {
+            System.out.println("Erro ao excluir entrega: " + mensagemBanco(e));
         }
     }
 
@@ -197,9 +202,14 @@ public class SistemaEntrega {
             return;
         }
 
-        atualizarStatus(entrega, StatusEntrega.EM_ANDAMENTO);
-        System.out.println("Status: " + entrega.getStatus());
-        System.out.println("===== Entrega iniciada!!! =====");
+        try (Connection connection = new ConnectionFactory().recuperarConexao()) {
+            entrega.setStatus(StatusEntrega.EM_ANDAMENTO);
+            new EntregaDAO(connection).atualizar(entrega);
+            System.out.println("Status: " + entrega.getStatus());
+            System.out.println("===== Entrega iniciada!!! =====");
+        } catch (SQLException | RuntimeException e) {
+            System.out.println("Erro ao atualizar entrega: " + mensagemBanco(e));
+        }
     }
 
     public void concluirEntrega(Scanner input) {
@@ -213,9 +223,14 @@ public class SistemaEntrega {
             return;
         }
 
-        atualizarStatus(entrega, StatusEntrega.ENTREGUE);
-        System.out.println("Status: " + entrega.getStatus());
-        System.out.println("===== Entrega concluída!!! =====");
+        try (Connection connection = new ConnectionFactory().recuperarConexao()) {
+            entrega.setStatus(StatusEntrega.ENTREGUE);
+            new EntregaDAO(connection).atualizar(entrega);
+            System.out.println("Status: " + entrega.getStatus());
+            System.out.println("===== Entrega concluída!!! =====");
+        } catch (SQLException | RuntimeException e) {
+            System.out.println("Erro ao atualizar entrega: " + mensagemBanco(e));
+        }
     }
 
     public void cancelarEntrega(Scanner input) {
@@ -233,9 +248,14 @@ public class SistemaEntrega {
             return;
         }
 
-        atualizarStatus(entrega, StatusEntrega.CANCELADA);
-        System.out.println("Status: " + entrega.getStatus());
-        System.out.println("===== Entrega cancelada!!! =====");
+        try (Connection connection = new ConnectionFactory().recuperarConexao()) {
+            entrega.setStatus(StatusEntrega.CANCELADA);
+            new EntregaDAO(connection).atualizar(entrega);
+            System.out.println("Status: " + entrega.getStatus());
+            System.out.println("===== Entrega cancelada!!! =====");
+        } catch (SQLException | RuntimeException e) {
+            System.out.println("Erro ao atualizar entrega: " + mensagemBanco(e));
+        }
     }
 
     private Entrega buscarEntrega(Scanner input) {
@@ -249,22 +269,26 @@ public class SistemaEntrega {
                 System.out.println("===== Entrega não encontrada!!! =====");
             }
             return entrega;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException | RuntimeException e) {
+            System.out.println("Erro ao buscar entrega: " + mensagemBanco(e));
+            return null;
         }
     }
 
-    private void atualizarStatus(Entrega entrega, StatusEntrega status) {
-        try (Connection connection = new ConnectionFactory().recuperarConexao()) {
-            entrega.setStatus(status);
-            new EntregaDAO(connection).atualizar(entrega);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    private String textoCaixa(ItemEntrega item) {
+        return item.getQuantidade() + "x "
+                + item.getProduto().getNomeDoProduto()
+                + " | Peso: " + item.getProduto().getPeso() + " kg cada"
+                + " | Volume: " + item.getProduto().getVolume() + " m³ cada"
+                + " | Valor declarado: " + item.getValorUnitario() + " R$";
     }
 
     private String enderecoTexto(Cliente cliente) {
         return cliente.getNome()
+                + " - "
+                + cliente.getEndereco().getRua()
+                + ", "
+                + cliente.getEndereco().getNumero()
                 + " - "
                 + cliente.getEndereco().getCidade()
                 + "/"
@@ -273,7 +297,11 @@ public class SistemaEntrega {
 
     private String mensagemBanco(Exception e) {
         Throwable causa = e.getCause();
-        if (causa != null && causa.getMessage() != null && causa.getMessage().contains("duplicate")) {
+        String texto = e.getMessage();
+        if (causa != null) {
+            texto = causa.getMessage();
+        }
+        if (texto != null && texto.contains("duplicate")) {
             return "já existe uma entrega com esse código";
         }
         return e.getMessage();

@@ -5,7 +5,7 @@ import model.Cliente;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ValidadorCliente implements validation.Validador<Cliente> {
+public class ValidadorCliente implements Validador<Cliente> {
 
     @Override
     public List<String> validar(Cliente cliente) {

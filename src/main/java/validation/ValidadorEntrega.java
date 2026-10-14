@@ -7,14 +7,14 @@ import model.ItemEntrega;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ValidadorEntrega implements validation.Validador<Entrega> {
+public class ValidadorEntrega implements Validador<Entrega> {
 
     @Override
     public List<String> validar(Entrega entrega) {
         List<String> errosEntrega = new ArrayList<>();
 
         if (entrega.getCodigo() <= 0) {
-            errosEntrega.add("Identificador inválido");
+            errosEntrega.add("Código inválido");
         }
 
         if (entrega.getValorEntrega() < 0) {
@@ -27,6 +27,12 @@ public class ValidadorEntrega implements validation.Validador<Entrega> {
 
         if (entrega.getDestinatario() == null) {
             errosEntrega.add("Destinatário inválido");
+        }
+
+        if (entrega.getRemetente() != null
+                && entrega.getDestinatario() != null
+                && entrega.getRemetente().getDocumento().equals(entrega.getDestinatario().getDocumento())) {
+            errosEntrega.add("Remetente e destinatário precisam ser diferentes");
         }
 
         if (entrega.getItens() == null || entrega.getItens().isEmpty()) {
