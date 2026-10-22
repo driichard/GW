@@ -11,10 +11,13 @@ public class ConnectionFactory {
 
     public Connection recuperarConexao() {
         try {
-           return DriverManager
-                    .getConnection(URL, USUARIO, SENHA);
+            Class.forName("org.postgresql.Driver");
+            DriverManager.setLoginTimeout(5);
+            return DriverManager.getConnection(URL, USUARIO, SENHA);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Driver do PostgreSQL não encontrado", e);
         } catch (SQLException e) {
-           throw new RuntimeException(e);
+            throw new RuntimeException(e);
         }
      }
   }

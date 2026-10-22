@@ -12,4 +12,9 @@ dependencies {
     providedCompile 'javax.servlet.jsp:javax.servlet.jsp-api:2.3.3'
 
     implementation 'org.postgresql:postgresql:42.6.0'
+    implementation files('src/main/webapp/WEB-INF/lib/jstl-1.2.jar')
+}
+
+war {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }

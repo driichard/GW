@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EnderecoDAO {
     private Connection connection;
@@ -15,16 +17,17 @@ public class EnderecoDAO {
         this.connection = connection;
     }
 
-    public int salvar(Endereco endereco) {
-        String sql = "INSERT INTO endereco (cep, rua, numero, bairro, cidade, estado) VALUES (?, ?, ?, ?, ?, ?)";
+    public int salvar(Endereco endereco, int clienteId) {
+        String sql = "INSERT INTO endereco (cliente_id, cep, rua, numero, bairro, cidade, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setString(1, endereco.getCep());
-            preparedStatement.setString(2, endereco.getRua());
-            preparedStatement.setString(3, endereco.getNumero());
-            preparedStatement.setString(4, endereco.getBairro());
-            preparedStatement.setString(5, endereco.getCidade());
-            preparedStatement.setString(6, endereco.getEstado());
+            preparedStatement.setInt(1, clienteId);
+            preparedStatement.setString(2, endereco.getCep());
+            preparedStatement.setString(3, endereco.getRua());
+            preparedStatement.setString(4, endereco.getNumero());
+            preparedStatement.setString(5, endereco.getBairro());
+            preparedStatement.setString(6, endereco.getCidade());
+            preparedStatement.setString(7, endereco.getEstado());
             preparedStatement.executeUpdate();
 
             try (ResultSet rs = preparedStatement.getGeneratedKeys()) {
@@ -38,7 +41,7 @@ public class EnderecoDAO {
         }
     }
 
-    public void atualizar(int id, Endereco endereco) {
+    public void atualizar(Endereco endereco) {
         String sql = "UPDATE endereco SET cep = ?, rua = ?, numero = ?, bairro = ?, cidade = ?, estado = ? WHERE id = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -48,10 +51,40 @@ public class EnderecoDAO {
             preparedStatement.setString(4, endereco.getBairro());
             preparedStatement.setString(5, endereco.getCidade());
             preparedStatement.setString(6, endereco.getEstado());
-            preparedStatement.setInt(7, id);
+            preparedStatement.setInt(7, endereco.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public List<Endereco> listarPorCliente(int clienteId) {
+        String sql = "SELECT id, cep, rua, numero, bairro, cidade, estado FROM endereco WHERE cliente_id = ? ORDER BY id";
+        List<Endereco> enderecos = new ArrayList<>();
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, clienteId);
+
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                while (rs.next()) {
+                    enderecos.add(montar(rs));
+                }
+            }
+            return enderecos;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Endereco montar(ResultSet rs) throws SQLException {
+        return new Endereco(
+                rs.getInt("id"),
+                rs.getString("cep"),
+                rs.getString("rua"),
+                rs.getString("numero"),
+                rs.getString("bairro"),
+                rs.getString("cidade"),
+                rs.getString("estado")
+        );
     }
 }

@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,24 +18,31 @@ public class ProdutoDAO {
     }
 
     public void salvar(Produto produto) {
-        String sql = "INSERT INTO produto (codigo, nome, valor, peso, comprimento, altura, largura) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO produto (nome, valor, peso, comprimento, altura, largura, estoque) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, produto.getCodigo());
-            preparedStatement.setString(2, produto.getNomeDoProduto());
-            preparedStatement.setDouble(3, produto.getValor());
-            preparedStatement.setDouble(4, produto.getPeso());
-            preparedStatement.setDouble(5, produto.getComprimento());
-            preparedStatement.setDouble(6, produto.getAltura());
-            preparedStatement.setDouble(7, produto.getLargura());
-            preparedStatement.execute();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setString(1, produto.getNomeDoProduto());
+            preparedStatement.setDouble(2, produto.getValor());
+            preparedStatement.setDouble(3, produto.getPeso());
+            preparedStatement.setDouble(4, produto.getComprimento());
+            preparedStatement.setDouble(5, produto.getAltura());
+            preparedStatement.setDouble(6, produto.getLargura());
+            preparedStatement.setInt(7, produto.getEstoque());
+            preparedStatement.executeUpdate();
+
+            try (ResultSet rs = preparedStatement.getGeneratedKeys()) {
+                if (!rs.next()) {
+                    throw new RuntimeException("Não foi possível gravar o produto");
+                }
+                produto.setId(rs.getInt(1));
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     public List<Produto> listarTodas() {
-        String sql = "SELECT codigo, nome, valor, peso, comprimento, altura, largura FROM produto";
+        String sql = "SELECT id, nome, valor, peso, comprimento, altura, largura, estoque FROM produto ORDER BY id";
         List<Produto> produtos = new ArrayList<>();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -48,11 +56,11 @@ public class ProdutoDAO {
         }
     }
 
-    public Produto buscarPorCodigo(int codigo) {
-        String sql = "SELECT codigo, nome, valor, peso, comprimento, altura, largura FROM produto WHERE codigo = ?";
+    public Produto buscarPorId(int id) {
+        String sql = "SELECT id, nome, valor, peso, comprimento, altura, largura, estoque FROM produto WHERE id = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, codigo);
+            preparedStatement.setInt(1, id);
 
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 if (rs.next()) {
@@ -65,18 +73,58 @@ public class ProdutoDAO {
         }
     }
 
-    int buscarIdPorCodigo(int codigo) {
-        String sql = "SELECT id FROM produto WHERE codigo = ?";
+    public void atualizar(Produto produto) {
+        String sql = "UPDATE produto SET nome = ?, valor = ?, peso = ?, comprimento = ?, altura = ?, largura = ? WHERE id = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, codigo);
+            preparedStatement.setString(1, produto.getNomeDoProduto());
+            preparedStatement.setDouble(2, produto.getValor());
+            preparedStatement.setDouble(3, produto.getPeso());
+            preparedStatement.setDouble(4, produto.getComprimento());
+            preparedStatement.setDouble(5, produto.getAltura());
+            preparedStatement.setDouble(6, produto.getLargura());
+            preparedStatement.setInt(7, produto.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-            try (ResultSet rs = preparedStatement.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt("id");
-                }
-            }
-            throw new RuntimeException("Produto não encontrado");
+    public void deletar(int id) {
+        String sql = "DELETE FROM produto WHERE id = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void baixarEstoque(int id, int quantidade) {
+        Produto produto = buscarPorId(id);
+        if (produto == null || produto.getEstoque() < quantidade) {
+            throw new RuntimeException("não tem estoque disponível");
+        }
+
+        String sql = "UPDATE produto SET estoque = estoque - ? WHERE id = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, quantidade);
+            preparedStatement.setInt(2, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void adicionarEstoque(int id, int quantidade) {
+        String sql = "UPDATE produto SET estoque = estoque + ? WHERE id = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, quantidade);
+            preparedStatement.setInt(2, id);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -84,13 +132,14 @@ public class ProdutoDAO {
 
     private Produto montarProduto(ResultSet rs) throws SQLException {
         return new Produto(
-                rs.getInt("codigo"),
+                rs.getInt("id"),
                 rs.getString("nome"),
                 rs.getDouble("valor"),
                 rs.getDouble("peso"),
                 rs.getDouble("comprimento"),
                 rs.getDouble("altura"),
-                rs.getDouble("largura")
+                rs.getDouble("largura"),
+                rs.getInt("estoque")
         );
     }
 }

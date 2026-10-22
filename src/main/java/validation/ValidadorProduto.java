@@ -11,18 +11,14 @@ public class ValidadorProduto implements Validador<Produto> {
     public List<String> validar(Produto produto) {
         List<String> errosProduto = new ArrayList<>();
 
-        if (produto.getCodigo() <= 0) {
-            errosProduto.add("Código inválido");
-        }
-
-        if (produto.getValor() <= 0) {
-            errosProduto.add("Valor declarado inválido");
-        }
-
         if (produto.getNomeDoProduto() == null
                 || produto.getNomeDoProduto().isBlank()
                 || produto.getNomeDoProduto().matches("\\d+")) {
             errosProduto.add("Nome do produto inválido");
+        }
+
+        if (produto.getValor() <= 0) {
+            errosProduto.add("Valor unitário inválido");
         }
 
         if (produto.getPeso() <= 0) {
@@ -31,6 +27,10 @@ public class ValidadorProduto implements Validador<Produto> {
 
         if (produto.getComprimento() <= 0 || produto.getAltura() <= 0 || produto.getLargura() <= 0) {
             errosProduto.add("Medidas inválidas");
+        }
+
+        if (produto.getEstoque() < 0) {
+            errosProduto.add("Estoque inválido");
         }
 
         return errosProduto;

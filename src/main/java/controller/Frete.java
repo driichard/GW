@@ -15,7 +15,8 @@ public class Frete {
     }
 
     public static double calcular (double volume, double peso) {
-        return TAXA_BASE + TAXA_POR_VOLUME * volume + TAXA_POR_PESO * peso;
+        double valor = TAXA_BASE + TAXA_POR_VOLUME * volume + TAXA_POR_PESO * peso;
+        return Math.round(valor * 100.0) / 100.0;
     }
 
     public static double volumeTotal(List<ItemEntrega> itens) {

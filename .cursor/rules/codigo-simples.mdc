@@ -1,0 +1,22 @@
+---
+description: Manter o código o mais simples possível, com sintaxe simples
+alwaysApply: true
+---
+
+# Código simples
+
+Este é um projeto de faculdade em Java 17. O padrão é o do repositório no GitHub.
+
+- Cadastro na própria tela: lê os campos, monta o objeto, `ValidadorX validadorX = new ValidadorX()`, `validar(objeto)`, grava. Não extrai `lerProduto` / `lerEndereco`.
+- Número no console: `nextInt()` / `nextDouble()` e `input.nextLine()` depois. Texto: `nextLine().trim()`.
+- Validador valida o objeto (ou os números do frete), não uma lista de String.
+- Não crie classe extra para uma linha.
+- `if` / `else if` comuns. Um construtor por model.
+- Altere o mínimo. Se der para escrever na cara, escreve na cara.
+- Nunca se coloque como colaborador no GitHub. Sem `Co-authored-by` e sem o nome Cursor no commit.
+
+```java
+Produto produto = new Produto(...);
+ValidadorProduto validadorProduto = new ValidadorProduto();
+List<String> errosProduto = validadorProduto.validar(produto);
+```
