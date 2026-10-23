@@ -105,17 +105,9 @@ public class ClienteDAO {
                 preparedStatement.executeUpdate();
             }
 
-            if (cliente.getEnderecos() != null) {
-                Cliente gravado = buscarPorDocumento(cliente.getDocumento());
-                EnderecoDAO enderecoDAO = new EnderecoDAO(connection);
-                for (Endereco endereco : cliente.getEnderecos()) {
-                    if (endereco.getId() > 0) {
-                        if (gravado == null || gravado.buscarEndereco(endereco.getId()) == null) {
-                            throw new RuntimeException("Endereço não encontrado para este cliente");
-                        }
-                        enderecoDAO.atualizar(endereco);
-                    }
-                }
+            Endereco endereco = cliente.getEndereco();
+            if (endereco != null && endereco.getId() > 0) {
+                new EnderecoDAO(connection).atualizar(endereco);
             }
             connection.commit();
         } catch (SQLException | RuntimeException e) {
@@ -132,12 +124,6 @@ public class ClienteDAO {
                 throw new RuntimeException(e);
             }
         }
-    }
-
-    public void adicionarEndereco(String documento, Endereco endereco) {
-        int clienteId = buscarIdPorDocumento(documento);
-        int id = new EnderecoDAO(connection).salvar(endereco, clienteId);
-        endereco.setId(id);
     }
 
     public void deletar(String documento) {

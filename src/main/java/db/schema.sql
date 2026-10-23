@@ -31,8 +31,7 @@ CREATE TABLE produto (
                          peso        NUMERIC(10, 3) NOT NULL,
                          comprimento NUMERIC(10, 2) NOT NULL,
                          altura      NUMERIC(10, 2) NOT NULL,
-                         largura     NUMERIC(10, 2) NOT NULL,
-                         estoque     INTEGER        NOT NULL
+                         largura     NUMERIC(10, 2) NOT NULL
 );
 
 CREATE TABLE entrega (

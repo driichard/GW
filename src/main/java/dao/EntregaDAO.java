@@ -24,7 +24,6 @@ public class EntregaDAO {
 
     public void salvar(Entrega entrega) {
         ClienteDAO clienteDAO = new ClienteDAO(connection);
-        ProdutoDAO produtoDAO = new ProdutoDAO(connection);
         int remetenteId = clienteDAO.buscarIdPorDocumento(entrega.getRemetente().getDocumento());
         int destinatarioId = clienteDAO.buscarIdPorDocumento(entrega.getDestinatario().getDocumento());
 
@@ -32,8 +31,6 @@ public class EntregaDAO {
         String sqlItem = "INSERT INTO item_entrega (entrega_id, produto_id, quantidade, valor_unitario) VALUES (?, ?, ?, ?)";
 
         try {
-            connection.setAutoCommit(false);
-
             int entregaId;
             try (PreparedStatement preparedStatement = connection.prepareStatement(sqlEntrega, Statement.RETURN_GENERATED_KEYS)) {
                 preparedStatement.setDouble(1, entrega.getValorEntrega());
@@ -63,39 +60,13 @@ public class EntregaDAO {
                 }
                 preparedStatement.executeBatch();
             }
-
-            for (ItemEntrega item : entrega.getItens()) {
-                produtoDAO.baixarEstoque(item.getProduto().getId(), item.getQuantidade());
-            }
-
-            connection.commit();
-        } catch (SQLException | RuntimeException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException rollbackErro) {
-                throw new RuntimeException(rollbackErro);
-            }
+        } catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
-            try {
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
         }
     }
 
     public void atualizarEntrega(Entrega entrega) {
-        Entrega atual = buscarPorId(entrega.getId());
-        if (atual == null) {
-            throw new RuntimeException("Entrega não encontrada");
-        }
-        if (atual.getStatus() != StatusEntrega.PENDENTE) {
-            throw new RuntimeException("Só é possível editar entrega pendente");
-        }
-
         ClienteDAO clienteDAO = new ClienteDAO(connection);
-        ProdutoDAO produtoDAO = new ProdutoDAO(connection);
         int remetenteId = clienteDAO.buscarIdPorDocumento(entrega.getRemetente().getDocumento());
         int destinatarioId = clienteDAO.buscarIdPorDocumento(entrega.getDestinatario().getDocumento());
 
@@ -104,9 +75,6 @@ public class EntregaDAO {
         String sqlItem = "INSERT INTO item_entrega (entrega_id, produto_id, quantidade, valor_unitario) VALUES (?, ?, ?, ?)";
 
         try {
-            connection.setAutoCommit(false);
-            devolverEstoque(atual);
-
             try (PreparedStatement preparedStatement = connection.prepareStatement(sqlApagaItem)) {
                 preparedStatement.setInt(1, entrega.getId());
                 preparedStatement.executeUpdate();
@@ -132,25 +100,8 @@ public class EntregaDAO {
                 }
                 preparedStatement.executeBatch();
             }
-
-            for (ItemEntrega item : entrega.getItens()) {
-                produtoDAO.baixarEstoque(item.getProduto().getId(), item.getQuantidade());
-            }
-
-            connection.commit();
-        } catch (SQLException | RuntimeException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException rollbackErro) {
-                throw new RuntimeException(rollbackErro);
-            }
+        } catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
-            try {
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
         }
     }
 
@@ -166,81 +117,33 @@ public class EntregaDAO {
         }
     }
 
-    public void cancelar(Entrega entrega) {
-        if (entrega.getStatus() == StatusEntrega.ENTREGUE) {
-            throw new RuntimeException("Não é possível cancelar uma entrega já concluída");
-        }
-        if (entrega.getStatus() == StatusEntrega.CANCELADA) {
-            throw new RuntimeException("Entrega já está cancelada");
-        }
-
-        try {
-            connection.setAutoCommit(false);
-            devolverEstoque(entrega);
-            entrega.setStatus(StatusEntrega.CANCELADA);
-            atualizar(entrega);
-            connection.commit();
-        } catch (SQLException | RuntimeException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException rollbackErro) {
-                throw new RuntimeException(rollbackErro);
-            }
-            throw new RuntimeException(e);
-        } finally {
-            try {
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
-    public void excluir(Entrega entrega) {
-        if (entrega.getStatus() != StatusEntrega.ENTREGUE
-                && entrega.getStatus() != StatusEntrega.CANCELADA) {
-            throw new RuntimeException("Só é possível excluir entrega concluída ou cancelada");
-        }
-
-        try {
-            connection.setAutoCommit(false);
-            deletar(entrega.getId());
-            connection.commit();
-        } catch (SQLException | RuntimeException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException rollbackErro) {
-                throw new RuntimeException(rollbackErro);
-            }
-            throw new RuntimeException(e);
-        } finally {
-            try {
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
-    private void deletar(int id) {
+    public void excluir(int id) {
         String sqlItem = "DELETE FROM item_entrega WHERE entrega_id = ?";
         String sqlEntrega = "DELETE FROM entrega WHERE id = ?";
 
-        try (PreparedStatement deleteItem = connection.prepareStatement(sqlItem);
-             PreparedStatement deleteEntrega = connection.prepareStatement(sqlEntrega)) {
-            deleteItem.setInt(1, id);
-            deleteItem.executeUpdate();
-            deleteEntrega.setInt(1, id);
-            deleteEntrega.executeUpdate();
+        try {
+            connection.setAutoCommit(false);
+            try (PreparedStatement deleteItem = connection.prepareStatement(sqlItem);
+                 PreparedStatement deleteEntrega = connection.prepareStatement(sqlEntrega)) {
+                deleteItem.setInt(1, id);
+                deleteItem.executeUpdate();
+                deleteEntrega.setInt(1, id);
+                deleteEntrega.executeUpdate();
+            }
+            connection.commit();
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException rollbackErro) {
+                throw new RuntimeException(rollbackErro);
+            }
             throw new RuntimeException(e);
-        }
-    }
-
-    public void devolverEstoque(Entrega entrega) {
-        ProdutoDAO produtoDAO = new ProdutoDAO(connection);
-        for (ItemEntrega item : entrega.getItens()) {
-            produtoDAO.adicionarEstoque(item.getProduto().getId(), item.getQuantidade());
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -331,7 +234,7 @@ public class EntregaDAO {
     }
 
     private List<ItemEntrega> listarItens(int entregaId) throws SQLException {
-        String sql = "SELECT p.id, p.nome, p.valor, p.peso, p.comprimento, p.altura, p.largura, p.estoque, "
+        String sql = "SELECT p.id, p.nome, p.valor, p.peso, p.comprimento, p.altura, p.largura, "
                 + "i.quantidade, i.valor_unitario "
                 + "FROM item_entrega i "
                 + "JOIN produto p ON p.id = i.produto_id "
@@ -350,8 +253,7 @@ public class EntregaDAO {
                             rs.getDouble("peso"),
                             rs.getDouble("comprimento"),
                             rs.getDouble("altura"),
-                            rs.getDouble("largura"),
-                            rs.getInt("estoque")
+                            rs.getDouble("largura")
                     );
                     itens.add(new ItemEntrega(produto, rs.getInt("quantidade"), rs.getDouble("valor_unitario")));
                 }

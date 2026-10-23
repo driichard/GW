@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Clientes - Rota Certa</title>
-    <link rel="stylesheet" href="css/estilo.css">
+    <link rel="stylesheet" href="css/estilo.css?v=2">
 </head>
 <body>
 
@@ -21,21 +21,13 @@
         <p class="aviso">${erro}</p>
     </c:if>
 
-    <form class="busca" method="post" action="lista-clientes">
-        <input type="text" name="busca" value="${busca}" placeholder="Nome ou CPF/CNPJ">
-        <button class="botao-claro" type="submit">Buscar</button>
-        <c:if test="${not empty busca}">
-            <a class="botao-claro" href="lista-clientes">Limpar</a>
-        </c:if>
-    </form>
-
     <table class="tabela">
         <thead>
             <tr>
                 <th>Nome</th>
                 <th>Documento</th>
                 <th>Telefone</th>
-                <th>Endereços</th>
+                <th>Endereço</th>
                 <th>Ações</th>
             </tr>
         </thead>
@@ -52,28 +44,20 @@
                         <td>${cliente.nome}</td>
                         <td>${cliente.documento}</td>
                         <td>${cliente.telefone}</td>
+                        <td>${cliente.endereco.texto}</td>
                         <td>
-                            <c:forEach var="endereco" items="${cliente.enderecos}">
-                                <p>${endereco.texto}</p>
-                            </c:forEach>
-                        </td>
-                        <td>
-                            <form method="post" action="lancar-cliente">
-                                <input type="hidden" name="acao" value="editar">
-                                <input type="hidden" name="documento" value="${cliente.documento}">
-                                <button class="botao-claro" type="submit">Editar</button>
-                            </form>
-                            <form method="post" action="lancar-cliente">
-                                <input type="hidden" name="acao" value="editar">
-                                <input type="hidden" name="foco" value="novo-endereco">
-                                <input type="hidden" name="documento" value="${cliente.documento}">
-                                <button class="botao-claro" type="submit">Adicionar endereço</button>
-                            </form>
-                            <form method="post" action="lista-clientes">
-                                <input type="hidden" name="acao" value="excluir">
-                                <input type="hidden" name="documento" value="${cliente.documento}">
-                                <button class="botao-excluir" type="submit">Excluir</button>
-                            </form>
+                            <div class="acoes">
+                                <form method="post" action="lancar-cliente">
+                                    <input type="hidden" name="acao" value="editar">
+                                    <input type="hidden" name="documento" value="${cliente.documento}">
+                                    <button class="botao-claro" type="submit">Editar</button>
+                                </form>
+                                <form method="post" action="lista-clientes">
+                                    <input type="hidden" name="acao" value="excluir">
+                                    <input type="hidden" name="documento" value="${cliente.documento}">
+                                    <button class="botao-excluir" type="submit">Excluir</button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 </c:forEach>

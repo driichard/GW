@@ -12,8 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 @WebServlet("/lista-clientes")
 public class ListarClientesServlet extends HttpServlet {
@@ -32,9 +30,7 @@ public class ListarClientesServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         request.setAttribute("menuAtivo", "clientes");
 
-        String acao = request.getParameter("acao");
-
-        if ("excluir".equals(acao)) {
+        if ("excluir".equals(request.getParameter("acao"))) {
             excluir(request, response);
             return;
         }
@@ -65,29 +61,8 @@ public class ListarClientesServlet extends HttpServlet {
 
     private void mostrarLista(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String busca = request.getParameter("busca");
-        if (busca == null) {
-            busca = "";
-        }
-        busca = busca.trim();
-        request.setAttribute("busca", busca);
-
         try (Connection connection = new ConnectionFactory().recuperarConexao()) {
-            List<Cliente> lista = new ClienteDAO(connection).listarTodas();
-            if (!busca.isEmpty()) {
-                List<Cliente> filtrada = new ArrayList<>();
-                String termo = busca.toLowerCase();
-                String soNumeros = busca.replaceAll("\\D", "");
-                for (Cliente cliente : lista) {
-                    if (cliente.getNome().toLowerCase().contains(termo)
-                            || cliente.getDocumento().contains(busca)
-                            || (!soNumeros.isEmpty() && cliente.getDocumento().contains(soNumeros))) {
-                        filtrada.add(cliente);
-                    }
-                }
-                lista = filtrada;
-            }
-            request.setAttribute("listaClientes", lista);
+            request.setAttribute("listaClientes", new ClienteDAO(connection).listarTodas());
         } catch (SQLException | RuntimeException e) {
             request.setAttribute("erro", "Erro ao listar clientes: " + mensagemBanco(e));
         }

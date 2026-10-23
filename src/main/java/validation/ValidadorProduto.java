@@ -29,10 +29,6 @@ public class ValidadorProduto implements Validador<Produto> {
             errosProduto.add("Medidas inválidas");
         }
 
-        if (produto.getEstoque() < 0) {
-            errosProduto.add("Estoque inválido");
-        }
-
         return errosProduto;
     }
 }

@@ -10,7 +10,7 @@
 
 <jsp:include page="cabecalho.jsp"/>
 
-<main class="pagina">
+<main class="pagina inicio">
     <h1>Início</h1>
     <p class="subtitulo">Escolha o que deseja fazer no sistema de entregas da Rota Certa.</p>
 
@@ -21,15 +21,11 @@
         </a>
         <a class="cartao" href="lista-produtos">
             <h2>Produto</h2>
-            <p>Cadastrar, editar e excluir produtos com estoque.</p>
+            <p>Cadastrar, editar e excluir produtos.</p>
         </a>
         <a class="cartao" href="lista-entregas">
             <h2>Entrega</h2>
             <p>Criar entregas e acompanhar o status de cada uma.</p>
-        </a>
-        <a class="cartao" href="simular">
-            <h2>Simular frete</h2>
-            <p>Calcular uma estimativa de frete sem gravar nada.</p>
         </a>
     </div>
 </main>

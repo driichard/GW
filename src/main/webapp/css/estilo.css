@@ -65,8 +65,23 @@ h1 {
     margin-bottom: 36px;
 }
 
-.grade {
+.inicio {
+    min-height: calc(100vh - 70px);
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: 80px;
+    text-align: center;
+}
+
+.inicio h1,
+.inicio .subtitulo {
+    text-align: center;
+}
+
+.grade {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 20px;
 }
 
@@ -74,9 +89,10 @@ h1 {
     background: #ffffff;
     text-decoration: none;
     color: #111827;
-    width: 25%;
-    padding: 28px 22px;
+    padding: 32px 24px;
     border-radius: 16px;
+    min-height: 170px;
+    text-align: left;
 }
 
 .cartao h2 {
@@ -97,17 +113,6 @@ h1 {
     margin-bottom: 28px;
 }
 
-.busca {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.busca input[type="text"] {
-    width: 320px;
-}
-
 .botao {
     background: #0b1220;
     color: #ffffff;
@@ -122,8 +127,8 @@ h1 {
     padding: 6px 12px;
     border-radius: 16px;
     border: 1px solid #d1d5db;
-    margin-right: 6px;
     font-size: 13px;
+    white-space: nowrap;
 }
 
 .botao-claro {
@@ -163,8 +168,15 @@ h1 {
     border-top: 1px solid #f3f4f6;
 }
 
-.tabela td form {
-    display: inline;
+.acoes {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+.acoes form {
+    display: flex;
 }
 
 .formulario {
@@ -246,9 +258,9 @@ button.botao-excluir {
     padding: 6px 12px;
     border-radius: 16px;
     border: 1px solid #86efac;
-    margin-right: 6px;
     font-size: 13px;
     color: #166534;
+    white-space: nowrap;
 }
 
 .status {
@@ -296,22 +308,3 @@ button.botao-excluir {
     border-top: 1px solid #f3f4f6;
 }
 
-.resumo {
-    margin-top: 8px;
-}
-
-.campo-estoque {
-    width: 72px;
-    display: inline-block;
-    margin-right: 6px;
-}
-
-.resultado {
-    background: #ffffff;
-    padding: 28px 22px;
-    border-radius: 16px;
-}
-
-.resultado p {
-    margin-bottom: 8px;
-}

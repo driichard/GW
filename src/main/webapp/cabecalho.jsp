@@ -9,6 +9,5 @@
         <a class="${menuAtivo == 'clientes' ? 'ativo' : ''}" href="lista-clientes">Cliente</a>
         <a class="${menuAtivo == 'produtos' ? 'ativo' : ''}" href="lista-produtos">Produto</a>
         <a class="${menuAtivo == 'entregas' ? 'ativo' : ''}" href="lista-entregas">Entrega</a>
-        <a class="${menuAtivo == 'simular' ? 'ativo' : ''}" href="simular">Simular frete</a>
     </nav>
 </header>

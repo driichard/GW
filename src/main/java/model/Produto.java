@@ -8,9 +8,8 @@ public class Produto {
     private double comprimento;
     private double altura;
     private double largura;
-    private int estoque;
 
-    public Produto(int id, String nomeDoProduto, double valor, double peso, double comprimento, double altura, double largura, int estoque) {
+    public Produto(int id, String nomeDoProduto, double valor, double peso, double comprimento, double altura, double largura) {
         this.id = id;
         this.nomeDoProduto = nomeDoProduto;
         this.valor = valor;
@@ -18,7 +17,6 @@ public class Produto {
         this.comprimento = comprimento;
         this.altura = altura;
         this.largura = largura;
-        this.estoque = estoque;
     }
 
     public int getId() {
@@ -51,14 +49,6 @@ public class Produto {
 
     public double getLargura() {
         return largura;
-    }
-
-    public int getEstoque() {
-        return estoque;
-    }
-
-    public double getVolume() {
-        return (comprimento * altura * largura) / 1_000_000.0;
     }
 
     public String getTamanho() {
