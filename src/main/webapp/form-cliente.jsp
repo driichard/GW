@@ -35,39 +35,39 @@
         <div class="campos">
             <div class="campo">
                 <label>Nome</label>
-                <input type="text" name="nome" value="${cliente.nome}">
+                <input maxlength="50" type="text" name="nome" value="${cliente.nome}">
             </div>
             <div class="campo">
                 <label>CPF ou CNPJ (somente números)</label>
-                <input type="text" name="documento" value="${cliente.documento}">
+                <input maxlength="14" type="text" name="documento" value="${cliente.documento}">
             </div>
             <div class="campo">
                 <label>Telefone (11 números, com DDD)</label>
-                <input type="text" name="telefone" value="${cliente.telefone}">
+                <input maxlength="11" type="text" name="telefone" value="${cliente.telefone}">
             </div>
             <div class="campo">
                 <label>CEP (8 números)</label>
-                <input type="text" name="cep" value="${cliente.endereco.cep}">
+                <input maxlength="8" type="text" name="cep" value="${cliente.endereco.cep}">
             </div>
             <div class="campo">
                 <label>Rua</label>
-                <input type="text" name="rua" value="${cliente.endereco.rua}">
+                <input maxlength="50" type="text" name="rua" value="${cliente.endereco.rua}">
             </div>
             <div class="campo">
                 <label>Número (somente números)</label>
-                <input type="text" name="numero" value="${cliente.endereco.numero}">
+                <input maxlength="8" type="text" name="numero" value="${cliente.endereco.numero}">
             </div>
             <div class="campo">
                 <label>Bairro</label>
-                <input type="text" name="bairro" value="${cliente.endereco.bairro}">
+                <input maxlength="30" type="text" name="bairro" value="${cliente.endereco.bairro}">
             </div>
             <div class="campo">
                 <label>Cidade</label>
-                <input type="text" name="cidade" value="${cliente.endereco.cidade}">
+                <input maxlength="50" type="text" name="cidade" value="${cliente.endereco.cidade}">
             </div>
             <div class="campo">
                 <label>Estado (2 letras, ex: SP)</label>
-                <input type="text" name="estado" value="${cliente.endereco.estado}">
+                <input maxlength="2" type="text" name="estado" value="${cliente.endereco.estado}">
             </div>
         </div>
 

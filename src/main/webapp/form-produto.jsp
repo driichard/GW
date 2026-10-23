@@ -28,33 +28,33 @@
     <form class="formulario" method="post" action="lancar-produto">
         <input type="hidden" name="acao" value="${editar ? 'atualizarProduto' : 'cadastrarProduto'}">
         <c:if test="${editar}">
-            <input type="hidden" name="id" value="${produto.id}">
+            <input maxlength="5"type="hidden" name="id" value="${produto.id}">
         </c:if>
 
         <div class="campos">
             <div class="campo">
                 <label>Nome do produto</label>
-                <input type="text" name="nome" value="${produto.nomeDoProduto}">
+                <input maxlength="50" type="text" name="nome" value="${produto.nomeDoProduto}">
             </div>
             <div class="campo">
                 <label>Peso (kg)</label>
-                <input type="text" name="peso" value="${produto.peso}">
+                <input maxlength="10" type="text" name="peso" value="${produto.peso}">
             </div>
             <div class="campo">
                 <label>Comprimento (cm)</label>
-                <input type="text" name="comprimento" value="${produto.comprimento}">
+                <input maxlength="10" type="text" name="comprimento" value="${produto.comprimento}">
             </div>
             <div class="campo">
                 <label>Altura (cm)</label>
-                <input type="text" name="altura" value="${produto.altura}">
+                <input maxlength="10" type="text" name="altura" value="${produto.altura}">
             </div>
             <div class="campo">
                 <label>Largura (cm)</label>
-                <input type="text" name="largura" value="${produto.largura}">
+                <input maxlength="10" type="text" name="largura" value="${produto.largura}">
             </div>
             <div class="campo">
                 <label>Valor unitário</label>
-                <input type="text" name="valor" value="${produto.valor}">
+                <input maxlength="10" type="text" name="valor" value="${produto.valor}">
             </div>
         </div>
         <div class="linha-acoes">

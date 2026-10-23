@@ -11,7 +11,7 @@
 <jsp:include page="cabecalho.jsp"/>
 
 <main class="pagina inicio">
-    <h1>Início</h1>
+    <h1>Menu</h1>
     <p class="subtitulo">Escolha o que deseja fazer no sistema de entregas da Rota Certa.</p>
 
     <div class="grade">

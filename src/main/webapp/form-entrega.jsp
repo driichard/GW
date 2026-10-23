@@ -29,19 +29,19 @@
         <div class="campos">
             <div class="campo">
                 <label>CPF ou CNPJ do remetente</label>
-                <input type="text" name="documentoRemetente" value="${documentoRemetente}">
+                <input maxlength="14" type="text" name="documentoRemetente" value="${documentoRemetente}">
             </div>
             <div class="campo">
                 <label>CPF ou CNPJ do destinatário</label>
-                <input type="text" name="documentoDestinatario" value="${documentoDestinatario}">
+                <input maxlength="14" type="text" name="documentoDestinatario" value="${documentoDestinatario}">
             </div>
             <div class="campo">
                 <label>Id do produto</label>
-                <input type="text" name="idProduto">
+                <input maxlength="5" type="text" name="idProduto">
             </div>
             <div class="campo">
                 <label>Quantidade</label>
-                <input type="text" name="quantidade">
+                <input maxlength="50" type="text" name="quantidade">
             </div>
         </div>
 
