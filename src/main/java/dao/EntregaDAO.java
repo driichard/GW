@@ -27,18 +27,17 @@ public class EntregaDAO {
         int remetenteId = clienteDAO.buscarIdPorDocumento(entrega.getRemetente().getDocumento());
         int destinatarioId = clienteDAO.buscarIdPorDocumento(entrega.getDestinatario().getDocumento());
 
-        String sqlEntrega = "INSERT INTO entrega (valor, status, remetente_id, destinatario_id, origem_id, destino_id) VALUES (?, ?, ?, ?, ?, ?)";
+        String sqlEntrega = "INSERT INTO entrega (status, remetente_id, destinatario_id, origem_id, destino_id) VALUES (?, ?, ?, ?, ?)";
         String sqlItem = "INSERT INTO item_entrega (entrega_id, produto_id, quantidade, valor_unitario) VALUES (?, ?, ?, ?)";
 
         try {
             int entregaId;
             try (PreparedStatement preparedStatement = connection.prepareStatement(sqlEntrega, Statement.RETURN_GENERATED_KEYS)) {
-                preparedStatement.setDouble(1, entrega.getValorEntrega());
-                preparedStatement.setString(2, entrega.getStatus().toString());
-                preparedStatement.setInt(3, remetenteId);
-                preparedStatement.setInt(4, destinatarioId);
-                preparedStatement.setInt(5, entrega.getOrigem().getId());
-                preparedStatement.setInt(6, entrega.getDestino().getId());
+                preparedStatement.setString(1, entrega.getStatus().name());
+                preparedStatement.setInt(2, remetenteId);
+                preparedStatement.setInt(3, destinatarioId);
+                preparedStatement.setInt(4, entrega.getOrigem().getId());
+                preparedStatement.setInt(5, entrega.getDestino().getId());
                 preparedStatement.executeUpdate();
 
                 try (ResultSet rs = preparedStatement.getGeneratedKeys()) {
@@ -70,7 +69,7 @@ public class EntregaDAO {
         int remetenteId = clienteDAO.buscarIdPorDocumento(entrega.getRemetente().getDocumento());
         int destinatarioId = clienteDAO.buscarIdPorDocumento(entrega.getDestinatario().getDocumento());
 
-        String sqlEntrega = "UPDATE entrega SET valor = ?, remetente_id = ?, destinatario_id = ?, origem_id = ?, destino_id = ? WHERE id = ?";
+        String sqlEntrega = "UPDATE entrega SET remetente_id = ?, destinatario_id = ?, origem_id = ?, destino_id = ? WHERE id = ?";
         String sqlApagaItem = "DELETE FROM item_entrega WHERE entrega_id = ?";
         String sqlItem = "INSERT INTO item_entrega (entrega_id, produto_id, quantidade, valor_unitario) VALUES (?, ?, ?, ?)";
 
@@ -81,12 +80,11 @@ public class EntregaDAO {
             }
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(sqlEntrega)) {
-                preparedStatement.setDouble(1, entrega.getValorEntrega());
-                preparedStatement.setInt(2, remetenteId);
-                preparedStatement.setInt(3, destinatarioId);
-                preparedStatement.setInt(4, entrega.getOrigem().getId());
-                preparedStatement.setInt(5, entrega.getDestino().getId());
-                preparedStatement.setInt(6, entrega.getId());
+                preparedStatement.setInt(1, remetenteId);
+                preparedStatement.setInt(2, destinatarioId);
+                preparedStatement.setInt(3, entrega.getOrigem().getId());
+                preparedStatement.setInt(4, entrega.getDestino().getId());
+                preparedStatement.setInt(5, entrega.getId());
                 preparedStatement.executeUpdate();
             }
 
@@ -109,7 +107,7 @@ public class EntregaDAO {
         String sql = "UPDATE entrega SET status = ? WHERE id = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, entrega.getStatus().toString());
+            preparedStatement.setString(1, entrega.getStatus().name());
             preparedStatement.setInt(2, entrega.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -180,7 +178,7 @@ public class EntregaDAO {
     }
 
     private String sqlEntrega() {
-        return "SELECT e.id, e.valor, e.status, "
+        return "SELECT e.id, e.status, "
                 + "r.documento AS remetente_documento, r.telefone AS remetente_telefone, r.nome AS remetente_nome, "
                 + "ro.id AS remetente_endereco_id, ro.cep AS remetente_cep, ro.rua AS remetente_rua, ro.numero AS remetente_numero, "
                 + "ro.bairro AS remetente_bairro, ro.cidade AS remetente_cidade, ro.estado AS remetente_estado, "
@@ -205,19 +203,16 @@ public class EntregaDAO {
                 origem,
                 destino,
                 itens,
-                rs.getDouble("valor"),
                 statusDe(rs.getString("status"))
         );
     }
 
     private Cliente montarCliente(ResultSet rs, String prefixo, Endereco endereco) throws SQLException {
-        List<Endereco> enderecos = new ArrayList<>();
-        enderecos.add(endereco);
         return new Cliente(
                 rs.getString(prefixo + "_telefone"),
                 rs.getString(prefixo + "_documento"),
                 rs.getString(prefixo + "_nome"),
-                enderecos
+                endereco
         );
     }
 

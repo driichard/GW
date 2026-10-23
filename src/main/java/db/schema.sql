@@ -36,7 +36,6 @@ CREATE TABLE produto (
 
 CREATE TABLE entrega (
                          id              SERIAL PRIMARY KEY,
-                         valor           NUMERIC(10, 2) NOT NULL,
                          status          VARCHAR(50)    NOT NULL,
                          remetente_id    INTEGER        NOT NULL,
                          destinatario_id INTEGER        NOT NULL,

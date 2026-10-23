@@ -66,7 +66,7 @@ public class ClienteDAO {
              ResultSet rs = preparedStatement.executeQuery()) {
             EnderecoDAO enderecoDAO = new EnderecoDAO(connection);
             while (rs.next()) {
-                clientes.add(montarCliente(rs, enderecoDAO.listarPorCliente(rs.getInt("id"))));
+                clientes.add(montarCliente(rs, enderecoDAO.buscarPorCliente(rs.getInt("id"))));
             }
             return clientes;
         } catch (SQLException e) {
@@ -82,8 +82,8 @@ public class ClienteDAO {
 
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 if (rs.next()) {
-                    List<Endereco> enderecos = new EnderecoDAO(connection).listarPorCliente(rs.getInt("id"));
-                    return montarCliente(rs, enderecos);
+                    Endereco endereco = new EnderecoDAO(connection).buscarPorCliente(rs.getInt("id"));
+                    return montarCliente(rs, endereco);
                 }
             }
             return null;
@@ -174,12 +174,12 @@ public class ClienteDAO {
         }
     }
 
-    private Cliente montarCliente(ResultSet rs, List<Endereco> enderecos) throws SQLException {
+    private Cliente montarCliente(ResultSet rs, Endereco endereco) throws SQLException {
         return new Cliente(
                 rs.getString("telefone"),
                 rs.getString("documento"),
                 rs.getString("nome"),
-                enderecos
+                endereco
         );
     }
 }

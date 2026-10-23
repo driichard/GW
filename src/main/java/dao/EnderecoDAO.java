@@ -7,8 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 public class EnderecoDAO {
     private Connection connection;
@@ -58,19 +56,18 @@ public class EnderecoDAO {
         }
     }
 
-    public List<Endereco> listarPorCliente(int clienteId) {
+    public Endereco buscarPorCliente(int clienteId) {
         String sql = "SELECT id, cep, rua, numero, bairro, cidade, estado FROM endereco WHERE cliente_id = ? ORDER BY id";
-        List<Endereco> enderecos = new ArrayList<>();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, clienteId);
 
             try (ResultSet rs = preparedStatement.executeQuery()) {
-                while (rs.next()) {
-                    enderecos.add(montar(rs));
+                if (rs.next()) {
+                    return montar(rs);
                 }
             }
-            return enderecos;
+            return null;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

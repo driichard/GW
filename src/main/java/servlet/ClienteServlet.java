@@ -26,6 +26,12 @@ public class ClienteServlet extends HttpServlet {
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         request.setAttribute("menuAtivo", "clientes");
+
+        if ("editar".equals(request.getParameter("acao"))) {
+            editar(request, response);
+            return;
+        }
+
         request.getRequestDispatcher("form-cliente.jsp").forward(request, response);
     }
 
@@ -35,14 +41,7 @@ public class ClienteServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         request.setAttribute("menuAtivo", "clientes");
 
-        String acao = request.getParameter("acao");
-
-        if ("editar".equals(acao)) {
-            editar(request, response);
-            return;
-        }
-
-        if ("salvarAlteracao".equals(acao)) {
+        if ("salvarAlteracao".equals(request.getParameter("acao"))) {
             salvarAlteracao(request, response);
             return;
         }
@@ -125,7 +124,8 @@ public class ClienteServlet extends HttpServlet {
             }
 
             Endereco endereco = cliente.getEndereco();
-            if (endereco.getId() > 0 && gravado.buscarEndereco(endereco.getId()) == null) {
+            Endereco enderecoGravado = gravado.getEndereco();
+            if (endereco.getId() > 0 && (enderecoGravado == null || enderecoGravado.getId() != endereco.getId())) {
                 request.setAttribute("erro", "Endereço não encontrado para este cliente");
                 request.setAttribute("editar", true);
                 request.setAttribute("cliente", cliente);
@@ -156,13 +156,11 @@ public class ClienteServlet extends HttpServlet {
                 texto(request, "cidade"),
                 texto(request, "estado")
         );
-        List<Endereco> enderecos = new ArrayList<>();
-        enderecos.add(endereco);
         return new Cliente(
                 texto(request, "telefone"),
                 texto(request, "documento"),
                 texto(request, "nome"),
-                enderecos
+                endereco
         );
     }
 

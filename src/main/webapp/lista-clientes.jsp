@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Clientes - Rota Certa</title>
-    <link rel="stylesheet" href="css/estilo.css?v=2">
+    <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
 
@@ -47,11 +47,7 @@
                         <td>${cliente.endereco.texto}</td>
                         <td>
                             <div class="acoes">
-                                <form method="post" action="lancar-cliente">
-                                    <input type="hidden" name="acao" value="editar">
-                                    <input type="hidden" name="documento" value="${cliente.documento}">
-                                    <button class="botao-claro" type="submit">Editar</button>
-                                </form>
+                                <a class="botao-claro" href="lancar-cliente?acao=editar&documento=${cliente.documento}">Editar</a>
                                 <form method="post" action="lista-clientes">
                                     <input type="hidden" name="acao" value="excluir">
                                     <input type="hidden" name="documento" value="${cliente.documento}">

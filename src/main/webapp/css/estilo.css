@@ -191,17 +191,6 @@ h1 {
     margin: 24px 0 16px 0;
 }
 
-.formulario h3 {
-    font-size: 16px;
-    margin-bottom: 12px;
-}
-
-.bloco-endereco {
-    margin-bottom: 20px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #f3f4f6;
-}
-
 .campos {
     display: flex;
     flex-wrap: wrap;
@@ -219,18 +208,13 @@ label {
     margin-bottom: 6px;
 }
 
-input[type="text"],
-select {
+input[type="text"] {
     width: 100%;
     padding: 10px 12px;
     border: 1px solid #d1d5db;
     border-radius: 10px;
     font-size: 15px;
     background: #ffffff;
-}
-
-input[readonly] {
-    background: #f3f4f6;
 }
 
 .linha-acoes {

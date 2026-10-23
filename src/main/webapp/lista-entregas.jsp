@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Entregas - Rota Certa</title>
-    <link rel="stylesheet" href="css/estilo.css?v=2">
+    <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
 
@@ -58,7 +58,7 @@
                         <td>${entrega.destinatario.nome}</td>
                         <td>${entrega.origem.cidade}/${entrega.origem.estado}</td>
                         <td>${entrega.destino.cidade}/${entrega.destino.estado}</td>
-                        <td><span class="status ${classeStatus}">${entrega.status}</span></td>
+                        <td><span class="status ${classeStatus}">${entrega.status.descricao}</span></td>
                         <td>
                             <div class="acoes">
                                 <c:if test="${entrega.status eq 'PENDENTE'}">

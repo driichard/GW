@@ -104,7 +104,6 @@ public class EntregaServlet extends HttpServlet {
                     remetente.getEndereco(),
                     destinatario.getEndereco(),
                     itens,
-                    0,
                     StatusEntrega.PENDENTE
             );
 

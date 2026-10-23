@@ -9,18 +9,16 @@ public class Entrega {
     private Endereco origem;
     private Endereco destino;
     private List<ItemEntrega> itens;
-    private double valorEntrega;
     private StatusEntrega status;
 
     public Entrega(int id, Cliente remetente, Cliente destinatario, Endereco origem, Endereco destino,
-                   List<ItemEntrega> itens, double valorEntrega, StatusEntrega status) {
+                   List<ItemEntrega> itens, StatusEntrega status) {
         this.id = id;
         this.remetente = remetente;
         this.destinatario = destinatario;
         this.origem = origem;
         this.destino = destino;
         this.itens = itens;
-        this.valorEntrega = valorEntrega;
         this.status = status;
     }
 
@@ -50,10 +48,6 @@ public class Entrega {
 
     public List<ItemEntrega> getItens() {
         return itens;
-    }
-
-    public double getValorEntrega() {
-        return valorEntrega;
     }
 
     public StatusEntrega getStatus() {

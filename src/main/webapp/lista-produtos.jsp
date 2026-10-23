@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Produtos - Rota Certa</title>
-    <link rel="stylesheet" href="css/estilo.css?v=2">
+    <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
 
