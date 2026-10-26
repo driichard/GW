@@ -48,7 +48,7 @@ public class ValidadorEndereco implements Validador<Endereco> {
 
         if (endereco.getNumero() == null
                 || endereco.getNumero().isBlank()
-                || !endereco.getNumero().matches("\\d{11}")) {
+                || !endereco.getNumero().matches("\\d+")) {
             errosEndereco.add("Numero inválido!");
         }
 

@@ -26,6 +26,7 @@ CREATE TABLE endereco (
 
 CREATE TABLE produto (
                          id          SERIAL PRIMARY KEY,
+                         codigo      VARCHAR(30) NOT NULL UNIQUE,
                          nome        VARCHAR(100)   NOT NULL,
                          valor       NUMERIC(10, 2) NOT NULL,
                          peso        NUMERIC(10, 3) NOT NULL,

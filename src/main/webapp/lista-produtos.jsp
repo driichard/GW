@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -46,7 +47,12 @@
                         <td>${produto.nomeDoProduto}</td>
                         <td>${produto.tamanho}</td>
                         <td>${produto.peso} kg</td>
-                        <td>${produto.valor} R$</td>
+                        <td> 
+                            <fmt:formatNumber
+                                value="${produto.valor}"
+                                minFractionDigits="2"
+                                maxFractionDigits="2"/> 
+                            </td>
                         <td>
                             <div class="acoes">
                                 <a class="botao-claro" href="lancar-produto?acao=editar&id=${produto.id}">Editar</a>
