@@ -25,7 +25,7 @@
     <table class="tabela">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>Código</th>
                 <th>Nome</th>
                 <th>Tamanho</th>
                 <th>Peso</th>
@@ -43,7 +43,7 @@
             <c:otherwise>
                 <c:forEach var="produto" items="${listaProdutos}">
                     <tr>
-                        <td>${produto.id}</td>
+                        <td>${produto.codigo}</td>
                         <td>${produto.nomeDoProduto}</td>
                         <td>${produto.tamanho}</td>
                         <td>${produto.peso} kg</td>

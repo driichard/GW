@@ -36,8 +36,8 @@
                 <input maxlength="14" type="text" name="documentoDestinatario" value="${documentoDestinatario}">
             </div>
             <div class="campo">
-                <label>Id do produto</label>
-                <input maxlength="5" type="text" name="idProduto">
+                <label>Código do produto</label>
+                <input maxlength="5" type="text" name="codigo">
             </div>
             <div class="campo">
                 <label>Quantidade</label>
@@ -57,7 +57,7 @@
             <c:forEach var="item" items="${itens}">
                 <div class="linha-caixa">
                     <p>
-                        ${item.quantidade}x [${item.produto.id}]
+                        ${item.quantidade}x [${item.produto.codigo}]
                         ${item.produto.nomeDoProduto}
                         | Valor unitário: ${item.valorUnitario} R$
                     </p>
@@ -65,7 +65,7 @@
                         <input type="hidden" name="acao" value="remover">
                         <input type="hidden" name="documentoRemetente" value="${documentoRemetente}">
                         <input type="hidden" name="documentoDestinatario" value="${documentoDestinatario}">
-                        <input type="hidden" name="idProduto" value="${item.produto.id}">
+                        <input type="hidden" name="idProduto" value="${item.produto.codigo}">
                         <button class="botao-excluir" type="submit">Remover</button>
                     </form>
                 </div>

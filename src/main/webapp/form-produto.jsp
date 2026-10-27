@@ -36,6 +36,10 @@
                 <label>Nome do produto</label>
                 <input maxlength="50" type="text" name="nome" value="${produto.nomeDoProduto}">
             </div>
+            <div class="compo">
+                <label> Código do produto</label>
+                <input maxlength="5" type="text" name="codigo" value="${produto.codigo}">
+            </div>
             <div class="campo">
                 <label>Peso (kg)</label>
                 <input maxlength="10" type="text" name="peso" value="${produto.peso}">

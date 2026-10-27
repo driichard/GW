@@ -135,6 +135,7 @@ public class ProdutoServlet extends HttpServlet {
     private Produto montarProduto(HttpServletRequest request, int id) {
         return new Produto(
                 id,
+                texto(request, "codigo"),
                 texto(request, "nome"),
                 numeroDecimal(texto(request, "valor")),
                 numeroDecimal(texto(request, "peso")),

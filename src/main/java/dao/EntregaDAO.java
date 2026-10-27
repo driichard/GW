@@ -229,7 +229,7 @@ public class EntregaDAO {
     }
 
     private List<ItemEntrega> listarItens(int entregaId) throws SQLException {
-        String sql = "SELECT p.id, p.nome, p.valor, p.peso, p.comprimento, p.altura, p.largura, "
+        String sql = "SELECT p.id, p.codigo, p.nome, p.valor, p.peso, p.comprimento, p.altura, p.largura, "
                 + "i.quantidade, i.valor_unitario "
                 + "FROM item_entrega i "
                 + "JOIN produto p ON p.id = i.produto_id "
@@ -243,6 +243,7 @@ public class EntregaDAO {
                 while (rs.next()) {
                     Produto produto = new Produto(
                             rs.getInt("id"),
+                            rs.getString("codigo"),
                             rs.getString("nome"),
                             rs.getDouble("valor"),
                             rs.getDouble("peso"),

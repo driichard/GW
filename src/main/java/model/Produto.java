@@ -2,6 +2,7 @@ package model;
 
 public class Produto {
     private int id;
+    private String codigo;
     private String nomeDoProduto;
     private double valor;
     private double peso;
@@ -9,8 +10,9 @@ public class Produto {
     private double altura;
     private double largura;
 
-    public Produto(int id, String nomeDoProduto, double valor, double peso, double comprimento, double altura, double largura) {
+    public Produto(int id, String codigo, String nomeDoProduto, double valor, double peso, double comprimento, double altura, double largura) {
         this.id = id;
+        this.codigo = codigo;
         this.nomeDoProduto = nomeDoProduto;
         this.valor = valor;
         this.peso = peso;
@@ -25,6 +27,14 @@ public class Produto {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getCodigo () {
+        return codigo;
+    }
+
+    public void setCodigo (String codigo) {
+        this.codigo = codigo;
     }
 
     public String getNomeDoProduto() {

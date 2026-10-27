@@ -196,17 +196,24 @@ public class EntregaServlet extends HttpServlet {
             request.setAttribute("editar", true);
         }
 
+        try (Connection connection = new ConnectionFactory().recuperarConexao()) {
+            List<Cliente> clientes = new ClienteDAO(connection).listarTodas();
+            request.setAttribute("listaClientes", clientes);
+        } catch (SQLException | RuntimeException e) {
+            request.setAttribute("erro", "Erro ao carregar clientes: " + mensagemBanco(e));
+        }
+
         request.setAttribute("itens", itensDaSessao(request));
         request.getRequestDispatcher("form-entrega.jsp").forward(request, response);
     }
 
     private void adicionarProduto(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Integer idProduto = inteiro(request, "idProduto");
+        String codigo = texto(request, "idProduto");
         Integer quantidade = inteiro(request, "quantidade");
         List<String> errosProduto = new ArrayList<>();
-        if (idProduto == null || idProduto <= 0) {
-            errosProduto.add("Id do produto inválido");
+        if (codigo.isEmpty()) {
+            errosProduto.add("codigo do produto inválido");
         }
         if (quantidade == null || quantidade <= 0) {
             errosProduto.add("Quantidade inválida");
@@ -218,7 +225,7 @@ public class EntregaServlet extends HttpServlet {
         }
 
         try (Connection connection = new ConnectionFactory().recuperarConexao()) {
-            Produto produto = new ProdutoDAO(connection).buscarPorId(idProduto);
+            Produto produto = new ProdutoDAO(connection).buscarPorCodigo(codigo);
             if (produto == null) {
                 request.setAttribute("erro", "Produto não encontrado. Cadastre o produto antes.");
                 mostrarFormulario(request, response);
@@ -227,7 +234,7 @@ public class EntregaServlet extends HttpServlet {
 
             List<ItemEntrega> itens = itensDaSessao(request);
             for (ItemEntrega itemNaLista : itens) {
-                if (itemNaLista.getProduto().getId() == idProduto) {
+                if (itemNaLista.getProduto().getCodigo().equals(codigo)) {
                     request.setAttribute("erro", "Esse produto já está na entrega");
                     mostrarFormulario(request, response);
                     return;

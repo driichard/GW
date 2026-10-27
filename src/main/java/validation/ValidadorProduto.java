@@ -17,6 +17,13 @@ public class ValidadorProduto implements Validador<Produto> {
             errosProduto.add("Nome do produto inválido");
         }
 
+        if (produto.getCodigo() == null 
+                || produto.getCodigo().isBlank()
+                || !produto.getCodigo().matches("\\d+")) {
+                
+            errosProduto.add("código invalido!");        
+        }
+
         if (produto.getValor() <= 0) {
             errosProduto.add("Valor unitário inválido");
         }
