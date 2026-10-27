@@ -76,10 +76,10 @@ public class ProdutoDAO {
     }
 
     public Produto buscarPorCodigo(String codigo) {
-        String sql = "SELECT id, codigo, mome, valor, valor, peso, comprimento, altura, largura FROM produto WHERE id = ?";
+        String sql = "SELECT id, codigo, nome, valor, valor, peso, comprimento, altura, largura FROM produto WHERE codigo = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(2, codigo);
+            preparedStatement.setString(1, codigo);
 
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 if(rs.next()) {

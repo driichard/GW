@@ -209,7 +209,7 @@ public class EntregaServlet extends HttpServlet {
 
     private void adicionarProduto(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String codigo = texto(request, "idProduto");
+        String codigo = texto(request, "codigo");
         Integer quantidade = inteiro(request, "quantidade");
         List<String> errosProduto = new ArrayList<>();
         if (codigo.isEmpty()) {
