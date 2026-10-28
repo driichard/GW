@@ -28,12 +28,29 @@
     <form class="formulario" method="post" action="lancar-entrega">
         <div class="campos">
             <div class="campo">
-                <label>CPF ou CNPJ do remetente</label>
-                <input maxlength="14" type="text" name="documentoRemetente" value="${documentoRemetente}">
+                <label>Destinatario</label>
+                <select name="documentoDestinatario" >
+                    <option value="" >Selecione </option>
+                    <c:forEach var="cliente" items="${listaClientes}">
+                        <option value="${cliente.documento}"
+                        ${cliente.documento == documentoDestinatario ? 'selected' : ''}>
+                        ${cliente.nome} - ${cliente.documento}
+                        </option>
+                    </c:forEach>
+                </select>
             </div>
-            <div class="campo">
-                <label>CPF ou CNPJ do destinatário</label>
-                <input maxlength="14" type="text" name="documentoDestinatario" value="${documentoDestinatario}">
+
+            <div class="campo"> 
+                <label> Remetente </label>
+                <select name="documentoRemetente" >
+                    <option value="" >Selecione </option>
+                    <c:forEach var="cliente" items="${listaClientes}" > 
+                        <option value="${cliente.documento}"
+                        ${cliente.documento == documentoRemetente ? 'selected' : ''}>
+                        ${cliente.nome} - ${cliente.documento}
+                        </option>
+                    </c:forEach>  
+                </select>
             </div>
             <div class="campo">
                 <label>Código do produto</label>

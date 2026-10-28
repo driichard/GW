@@ -57,8 +57,8 @@
                         <td>${entrega.id}</td>
                         <td>${entrega.remetente.nome}</td>
                         <td>${entrega.destinatario.nome}</td>
-                        <td>${entrega.origem.cidade}/${entrega.origem.estado}</td>
-                        <td>${entrega.destino.cidade}/${entrega.destino.estado}</td>
+                        <td>${entrega.origem.texto}</td>
+                        <td>${entrega.destino.texto}</td>
                         <td><span class="status ${classeStatus}">${entrega.status.descricao}</span></td>
                         <td>
                             <div class="acoes">
