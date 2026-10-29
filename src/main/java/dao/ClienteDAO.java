@@ -58,7 +58,7 @@ public class ClienteDAO {
     }
 
     public List<Cliente> listarTodas() {
-        String sql = "SELECT c.id, c.documento, c.telefone, c.nome "
+        String sql ="SELECT c.id, c.documento, c.telefone, c.nome "
                 + "FROM cliente c ORDER BY c.nome";
         List<Cliente> clientes = new ArrayList<>();
 
