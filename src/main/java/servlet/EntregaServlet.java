@@ -199,6 +199,9 @@ public class EntregaServlet extends HttpServlet {
         try (Connection connection = new ConnectionFactory().recuperarConexao()) {
             List<Cliente> clientes = new ClienteDAO(connection).listarTodas();
             request.setAttribute("listaClientes", clientes);
+
+            List<Produto> produtos = new ProdutoDAO(connection).listarTodas(); 
+                request.setAttribute("listaProdutos", produtos);
         } catch (SQLException | RuntimeException e) {
             request.setAttribute("erro", "Erro ao carregar clientes: " + mensagemBanco(e));
         }

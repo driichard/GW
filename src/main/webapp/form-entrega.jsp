@@ -52,9 +52,17 @@
                     </c:forEach>  
                 </select>
             </div>
+
             <div class="campo">
                 <label>Código do produto</label>
-                <input maxlength="5" type="text" name="codigo">
+                <select name="codigo">
+                    <option value="">Selecione </option>
+                    <c:forEach var="produto" items="${listaProdutos}">
+                        <option value="${produto.codigo}"> 
+                            ${produto.codigo} - ${produto.nomeDoProduto}
+                        </option> 
+                    </c:forEach>
+                </select>
             </div>
             <div class="campo">
                 <label>Quantidade</label>
